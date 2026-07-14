@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="lang-ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="iCreative Agency — نحن لا نصنع محتوى، نحن نبني نموًا. We don't just create content. We build growth." />
+<meta name="theme-color" content="#0E0F12" />
+<title>iCreative Agency — We Build Growth</title>
+
+<!-- Fonts: Cairo/Tajawal for Arabic, Poppins/Montserrat for English -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   iCREATIVE AGENCY — PORTFOLIO
+   Design tokens, components & layout
+   Author: build for iCreative Agency
+   ============================================================ */
+
+/* ---------- 1. DESIGN TOKENS ---------- */
+:root{
+  /* Brand palette (extracted from iCreative posts) */
+  --ink:        #0E0F12;   /* deep charcoal background */
+  --ink-2:      #16181D;   /* raised surface */
+  --ink-3:      #1E2128;   /* cards */
+  --ink-4:      #262A32;   /* borders on dark */
+  --cream:      #F4F1EA;   /* light section bg */
+  --cream-2:    #EBE6DB;   /* light card */
+  --white:      #FFFFFF;
+
+  --orange:     #EC6A2C;   /* primary accent */
+  --orange-2:   #F5854A;   /* orange highlight */
+  --orange-deep:#C9531B;
+  --teal:       #1B888D;   /* secondary accent */
+  --teal-2:     #2AA0A5;
+  --teal-deep:  #0F5E62;
+
+  --txt:        #F4F1EA;   /* primary text on dark */
+  --txt-mute:   rgba(244,241,234,.62);
+  --txt-dim:    rgba(244,241,234,.40);
+  --txt-dark:   #14161B;   /* text on cream */
+  --txt-dark-mute: rgba(20,22,27,.60);
+
+  /* Type */
+  --f-ar: "Cairo","Tajawal", system-ui, sans-serif;
+  --f-en: "Poppins", system-ui, sans-serif;
+  --f-display-en: "Montserrat","Poppins", sans-serif;
+  --f-body: var(--f-ar);
+  --f-display: var(--f-ar);
+
+  /* Spacing scale */
+  --s-1: .25rem; --s-2:.5rem; --s-3:.75rem; --s-4:1rem; --s-5:1.5rem;
+  --s-6:2rem; --s-7:3rem; --s-8:4rem; --s-9:6rem; --s-10:8rem;
+
+  --container: 1240px;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 28px;
+
+  --shadow-sm: 0 4px 18px rgba(0,0,0,.18);
+  --shadow: 0 24px 60px -20px rgba(0,0,0,.55);
+  --shadow-orange: 0 20px 50px -18px rgba(236,106,44,.55);
+  --shadow-teal: 0 20px 50px -18px rgba(27,136,141,.5);
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+/* Font swap by language */
+html.lang-ar{ --f-body: var(--f-ar); --f-display: var(--f-ar); }
+html.lang-en{ --f-body: var(--f-en); --f-display: var(--f-display-en); }
+
+/* ---------- 2. RESET ---------- */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; scroll-padding-top:92px; }
+body{
+  font-family:var(--f-body);
+  background:var(--ink);
+  color:var(--txt);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+ul{ list-style:none; }
+::selection{ background:var(--orange); color:#fff; }
+
+/* Scrollbar */
+::-webkit-scrollbar{ width:11px; }
+::-webkit-scrollbar-track{ background:var(--ink); }
+::-webkit-scrollbar-thumb{ background:var(--ink-4); border-radius:20px; border:3px solid var(--ink); }
+::-webkit-scrollbar-thumb:hover{ background:var(--orange); }
+
+/* ---------- 3. LAYOUT PRIMITIVES ---------- */
+.container{ width:100%; max-width:var(--container); margin-inline:auto; padding-inline:clamp(1.2rem,4vw,2.5rem); }
+.section{ padding-block:clamp(4.5rem,9vw,8rem); position:relative; }
+.section--cream{ background:var(--cream); color:var(--txt-dark); }
+.section--cream .eyebrow{ color:var(--orange-deep); }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.6rem;
+  font-family:var(--f-en); font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; font-size:.72rem; color:var(--orange);
+  margin-bottom:1.1rem;
+}
+.eyebrow::before{ content:""; width:26px; height:2px; background:var(--orange); display:inline-block; }
+html.lang-ar .eyebrow{ letter-spacing:.05em; }
+
+.h-sec{
+  font-family:var(--f-display); font-weight:900;
+  font-size:clamp(2rem,4.6vw,3.4rem); line-height:1.12;
+  letter-spacing:-.01em;
+}
+.lead{ color:var(--txt-mute); font-size:clamp(1rem,1.4vw,1.15rem); max-width:56ch; }
+.section--cream .lead{ color:var(--txt-dark-mute); }
+
+.accent-o{ color:var(--orange); }
+.accent-t{ color:var(--teal); }
+.section--cream .accent-t{ color:var(--teal-deep); }
+
+/* ---------- 4. BUTTONS ---------- */
+.btn{
+  --bg:var(--orange); --fg:#fff;
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.95rem 1.7rem; border-radius:100px;
+  font-weight:800; font-size:.95rem; letter-spacing:.01em;
+  background:var(--bg); color:var(--fg);
+  position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  box-shadow:var(--shadow-orange);
+}
+.btn::before{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(120deg,var(--orange-2),var(--orange));
+  opacity:0; transition:opacity .4s var(--ease);
+}
+.btn:hover{ transform:translateY(-3px); }
+.btn:hover::before{ opacity:1; }
+.btn .ar{ display:inline-block; }
+.btn-arrow{ transition:transform .35s var(--ease); }
+html.lang-ar .btn-arrow{ transform:scaleX(-1); }
+.btn:hover .btn-arrow{ transform:translateX(4px); }
+html.lang-ar .btn:hover .btn-arrow{ transform:scaleX(-1) translateX(4px); }
+
+.btn--ghost{
+  --bg:transparent; --fg:var(--txt);
+  border:1.5px solid var(--ink-4); box-shadow:none;
+  backdrop-filter:blur(6px);
+}
+.btn--ghost::before{ background:rgba(255,255,255,.06); }
+.section--cream .btn--ghost{ --fg:var(--txt-dark); border-color:rgba(20,22,27,.18); }
+.section--cream .btn--ghost::before{ background:rgba(20,22,27,.05); }
+
+.btn--teal{ --bg:var(--teal); box-shadow:var(--shadow-teal); }
+.btn--teal::before{ background:linear-gradient(120deg,var(--teal-2),var(--teal)); }
+
+/* ---------- 5. GEOMETRIC MOTIFS ---------- */
+.chev{ position:absolute; width:0; height:0; pointer-events:none; }
+.dot-grid{
+  position:absolute; width:120px; height:120px; opacity:.5; pointer-events:none;
+  background-image:radial-gradient(currentColor 1.6px, transparent 1.6px);
+  background-size:16px 16px; color:var(--txt-dim);
+}
+.section--cream .dot-grid{ color:rgba(20,22,27,.18); }
+.corner-shape{ position:absolute; pointer-events:none; z-index:0; }
+
+/* ---------- 6. NAVBAR ---------- */
+.nav{
+  position:fixed; inset-block-start:0; inset-inline:0; z-index:100;
+  transition:background .4s var(--ease), backdrop-filter .4s, box-shadow .4s, padding .4s;
+  padding-block:1.15rem;
+}
+.nav.scrolled{
+  background:rgba(14,15,18,.72); backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:0 1px 0 rgba(255,255,255,.06), 0 18px 40px -24px rgba(0,0,0,.9);
+  padding-block:.7rem;
+}
+.nav__inner{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; }
+.nav__links{ display:flex; align-items:center; gap:.35rem; }
+.nav__links a{
+  padding:.55rem .95rem; border-radius:100px; font-weight:600; font-size:.92rem;
+  color:var(--txt-mute); position:relative; transition:color .3s var(--ease);
+}
+.nav__links a::after{
+  content:""; position:absolute; inset-block-end:.35rem; inset-inline-start:50%;
+  transform:translateX(-50%); width:0; height:2px; background:var(--orange);
+  border-radius:2px; transition:width .35s var(--ease);
+}
+.nav__links a:hover{ color:var(--txt); }
+.nav__links a:hover::after{ width:22px; }
+.nav__right{ display:flex; align-items:center; gap:.9rem; }
+.nav__cta--mobile{ display:none; }
+
+/* Logo */
+.logo{ display:inline-flex; align-items:center; gap:.1rem; font-family:var(--f-display-en); font-weight:900; }
+.logo__mark{
+  position:relative; width:30px; height:34px; display:inline-grid; place-items:center;
+}
+.logo__i{
+  width:10px; height:26px; background:var(--teal); border-radius:3px; position:relative;
+}
+.logo__i::after{ /* bulb */
+  content:""; position:absolute; inset-block-start:-9px; inset-inline-start:50%; transform:translateX(-50%);
+  width:14px; height:14px; border-radius:50%; background:var(--white);
+  box-shadow:0 0 0 3px var(--ink), 0 0 16px rgba(255,255,255,.5);
+}
+.logo__text{ display:flex; flex-direction:column; line-height:.9; }
+.logo__name{ font-size:1.32rem; letter-spacing:.02em; color:var(--white); }
+.logo__name b{ color:var(--white); }
+.logo__sub{ font-size:.54rem; letter-spacing:.48em; color:var(--txt-mute); font-weight:700; margin-inline-start:2px; }
+.section--cream .logo__name{ color:var(--txt-dark); }
+.section--cream .logo__sub{ color:var(--txt-dark-mute); }
+.section--cream .logo__i::after{ box-shadow:0 0 0 3px var(--cream); }
+
+/* Language toggle */
+.lang-toggle{
+  display:inline-flex; align-items:center; gap:.15rem;
+  background:rgba(255,255,255,.06); border:1px solid var(--ink-4);
+  border-radius:100px; padding:.28rem; position:relative;
+}
+.lang-toggle button{
+  padding:.32rem .7rem; border-radius:100px; font-weight:700; font-size:.78rem;
+  color:var(--txt-mute); position:relative; z-index:1; transition:color .3s var(--ease);
+  font-family:var(--f-en);
+}
+.lang-toggle button.active{ color:#fff; }
+.lang-toggle__pill{
+  position:absolute; inset-block:.28rem; inset-inline-start:.28rem;
+  width:calc(50% - .28rem); background:var(--orange);
+  border-radius:100px; transition:inset-inline-start .4s var(--ease), transform .4s var(--ease);
+  z-index:0; box-shadow:0 4px 14px rgba(236,106,44,.5);
+}
+html.lang-en .lang-toggle__pill{ inset-inline-start:calc(50%); }
+
+/* Burger */
+.burger{ display:none; width:44px; height:44px; border-radius:12px; border:1px solid var(--ink-4);
+  background:rgba(255,255,255,.05); position:relative; }
+.burger span{ position:absolute; inset-inline:11px; height:2px; background:var(--txt); border-radius:2px;
+  transition:.35s var(--ease); }
+.burger span:nth-child(1){ inset-block-start:15px; }
+.burger span:nth-child(2){ inset-block-start:21px; }
+.burger span:nth-child(3){ inset-block-start:27px; }
+body.menu-open .burger span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+body.menu-open .burger span:nth-child(2){ opacity:0; }
+body.menu-open .burger span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+/* ---------- 7. HERO ---------- */
+.hero{
+  position:relative; min-height:100svh; display:flex; align-items:center;
+  padding-block-start:clamp(7rem,12vh,10rem); padding-block-end:4rem;
+  overflow:hidden;
+}
+.hero__bg{ position:absolute; inset:0; z-index:0; }
+.hero__glow{
+  position:absolute; border-radius:50%; filter:blur(90px); opacity:.5;
+}
+.hero__glow--o{ width:520px; height:520px; background:radial-gradient(circle,var(--orange),transparent 65%);
+  inset-block-start:-10%; inset-inline-end:-8%; opacity:.35; }
+.hero__glow--t{ width:480px; height:480px; background:radial-gradient(circle,var(--teal),transparent 65%);
+  inset-block-end:-15%; inset-inline-start:-10%; opacity:.3; }
+.hero__grid-lines{
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:64px 64px; mask-image:radial-gradient(circle at 50% 40%,#000,transparent 78%);
+}
+.hero__watermark{
+  position:absolute; inset-block-end:-4%; inset-inline-start:-2%; z-index:0;
+  font-family:var(--f-display-en); font-weight:900; font-size:clamp(9rem,26vw,24rem);
+  line-height:.8; color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,.045);
+  letter-spacing:-.03em; pointer-events:none; user-select:none;
+}
+
+.hero__inner{ position:relative; z-index:2; display:grid; grid-template-columns:1.05fr .95fr;
+  gap:clamp(2rem,5vw,4.5rem); align-items:center; }
+.hero__badge{
+  display:inline-flex; align-items:center; gap:.55rem; padding:.5rem 1rem;
+  border:1px solid var(--ink-4); border-radius:100px; background:rgba(255,255,255,.04);
+  font-size:.8rem; font-weight:600; color:var(--txt-mute); margin-bottom:1.5rem;
+}
+.hero__badge .pulse{ width:8px; height:8px; border-radius:50%; background:var(--teal-2);
+  box-shadow:0 0 0 0 rgba(42,160,165,.7); animation:pulse 2.2s infinite; }
+@keyframes pulse{ 70%{ box-shadow:0 0 0 9px rgba(42,160,165,0);} 100%{ box-shadow:0 0 0 0 rgba(42,160,165,0);} }
+
+.hero__title{
+  font-family:var(--f-display); font-weight:900;
+  font-size:clamp(2.6rem,6.4vw,5rem); line-height:1.06; letter-spacing:-.01em;
+  margin-bottom:1.5rem;
+}
+.hero__title .grow{ color:var(--teal-2); position:relative; white-space:nowrap; }
+.hero__title .grow::after{
+  content:""; position:absolute; inset-block-end:.06em; inset-inline:0; height:.14em;
+  background:var(--orange); border-radius:4px; transform:scaleX(0); transform-origin:inline-start;
+  animation:underline 1s var(--ease) 1.1s forwards;
+}
+@keyframes underline{ to{ transform:scaleX(1);} }
+html.lang-en .hero__title{ font-size:clamp(2.4rem,6vw,4.6rem); text-transform:none; }
+
+.hero__sub{ font-size:clamp(1.05rem,1.6vw,1.25rem); color:var(--txt-mute); max-width:46ch; margin-bottom:2rem; }
+.hero__sub b{ color:var(--txt); font-weight:700; }
+.hero__cta{ display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+
+/* Hero visual — floating dashboard cards */
+.hero__visual{ position:relative; height:100%; min-height:440px; }
+.float-card{
+  position:absolute; background:var(--ink-3); border:1px solid var(--ink-4);
+  border-radius:var(--radius); padding:1.1rem 1.25rem; box-shadow:var(--shadow);
+  backdrop-filter:blur(4px);
+}
+.float-card__label{ font-family:var(--f-en); font-size:.72rem; color:var(--txt-mute); font-weight:600;
+  text-transform:uppercase; letter-spacing:.08em; margin-bottom:.35rem; }
+.float-card__val{ font-family:var(--f-display-en); font-size:1.9rem; font-weight:800; line-height:1; }
+.float-card__delta{ font-size:.75rem; font-weight:700; color:var(--teal-2); display:inline-flex; gap:.2rem; align-items:center; margin-top:.4rem; }
+.float-card--a{ inset-block-start:2%; inset-inline-start:0; width:210px; z-index:3; animation:floatY 6s var(--ease) infinite; }
+.float-card--b{ inset-block-start:30%; inset-inline-end:0; width:200px; z-index:4; animation:floatY 7s var(--ease) infinite .8s; }
+.float-card--c{ inset-block-end:6%; inset-inline-start:8%; width:230px; z-index:3; animation:floatY 6.6s var(--ease) infinite .4s; }
+@keyframes floatY{ 50%{ transform:translateY(-10px);} }
+
+.hero__chart{
+  position:absolute; inset:14% 12%; z-index:1; border-radius:var(--radius-lg);
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+  border:1px solid var(--ink-4); box-shadow:var(--shadow); overflow:hidden;
+  display:flex; align-items:flex-end; padding:1.5rem;
+}
+.hero__chart svg{ width:100%; height:70%; }
+.spark-line{ fill:none; stroke:var(--orange); stroke-width:3; stroke-linecap:round;
+  stroke-dasharray:600; stroke-dashoffset:600; animation:draw 2.4s var(--ease) .6s forwards; }
+.spark-area{ fill:url(#g1); opacity:0; animation:fadein 1s ease 1.6s forwards; }
+@keyframes draw{ to{ stroke-dashoffset:0;} }
+@keyframes fadein{ to{ opacity:1;} }
+.chip-brand{ position:absolute; inset-block-start:1.1rem; inset-inline-start:1.1rem;
+  font-family:var(--f-en); font-size:.72rem; font-weight:700; color:var(--txt-mute); letter-spacing:.05em; }
+
+/* Scroll hint */
+.scroll-hint{ position:absolute; inset-block-end:2rem; inset-inline-start:50%; transform:translateX(-50%);
+  z-index:3; display:flex; flex-direction:column; align-items:center; gap:.5rem; color:var(--txt-dim);
+  font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; font-family:var(--f-en); }
+.scroll-hint .mouse{ width:22px; height:34px; border:2px solid var(--txt-dim); border-radius:12px; position:relative; }
+.scroll-hint .mouse::after{ content:""; position:absolute; inset-block-start:6px; inset-inline-start:50%; transform:translateX(-50%);
+  width:3px; height:6px; background:var(--txt-mute); border-radius:3px; animation:scrolldot 1.6s infinite; }
+@keyframes scrolldot{ 60%{ transform:translate(-50%,10px); opacity:0;} 100%{opacity:0;} }
+
+/* ---------- 8. MARQUEE ---------- */
+.marquee{ border-block:1px solid var(--ink-4); background:var(--ink-2); overflow:hidden; padding-block:1.1rem; }
+.marquee__track{ display:flex; gap:3rem; width:max-content; animation:scrollX 26s linear infinite; }
+.marquee:hover .marquee__track{ animation-play-state:paused; }
+.marquee__item{ display:inline-flex; align-items:center; gap:.9rem; font-family:var(--f-display-en);
+  font-weight:800; font-size:1.05rem; letter-spacing:.14em; text-transform:uppercase; color:var(--txt-mute); white-space:nowrap; }
+.marquee__item .dot{ width:7px; height:7px; border-radius:50%; background:var(--orange); }
+@keyframes scrollX{ to{ transform:translateX(-50%);} }
+html.lang-ar .marquee__track{ animation-direction:reverse; }
+
+/* ---------- 9. STATS ---------- */
+#stats{ border-block-start:1px solid var(--ink-4); } /* quiet seam between two dark sections */
+.stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.4rem; }
+.stat{
+  background:linear-gradient(160deg,var(--ink-3),var(--ink-2)); border:1px solid var(--ink-4);
+  border-radius:var(--radius); padding:2.3rem 1.8rem; position:relative; overflow:hidden;
+  transition:transform .5s var(--ease), border-color .4s;
+}
+.stat::before{ content:""; position:absolute; inset-block-start:0; inset-inline-start:0; width:100%; height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--teal)); transform:scaleX(.16); transform-origin:inline-start; transition:transform .6s var(--ease); opacity:.55; }
+.stat:hover{ transform:translateY(-6px); border-color:var(--orange); }
+.stat:hover::before{ transform:scaleX(1); opacity:1; }
+.stat__num{ font-family:var(--f-display-en); font-weight:900; font-size:clamp(2.2rem,4vw,3rem); line-height:1;
+  background:linear-gradient(120deg,#fff,var(--txt-mute)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.stat__label{ color:var(--txt-mute); font-size:.95rem; margin-top:.6rem; font-weight:600; }
+.stat__icon{ position:absolute; inset-block-start:1.3rem; inset-inline-end:1.3rem; opacity:.5; }
+
+/* ---------- 10. SERVICES ---------- */
+.services__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin-top:3.2rem; }
+.svc{
+  position:relative; padding:2.2rem 2rem 2.4rem; border-radius:var(--radius-lg);
+  background:var(--white); border:1px solid rgba(20,22,27,.07);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+  overflow:hidden; isolation:isolate;
+}
+.svc::after{ content:""; position:absolute; inset:0; z-index:-1; opacity:0;
+  background:linear-gradient(165deg,var(--ink-2),var(--ink)); transition:opacity .5s var(--ease); }
+.svc:hover{ transform:translateY(-8px); box-shadow:var(--shadow); color:var(--cream); }
+.svc:hover::after{ opacity:1; }
+.svc:hover .svc__title{ color:#fff; }
+.svc:hover .svc__desc{ color:var(--txt-mute); }
+.svc:hover .svc__num{ color:rgba(255,255,255,.12); }
+.svc__icon{
+  width:60px; height:60px; border-radius:16px; display:grid; place-items:center; margin-bottom:1.4rem;
+  background:linear-gradient(150deg,rgba(236,106,44,.14),rgba(27,136,141,.14));
+  color:var(--orange); transition:transform .5s var(--ease);
+}
+.svc:hover .svc__icon{ transform:rotate(-6deg) scale(1.05); background:linear-gradient(150deg,var(--orange),var(--orange-deep)); color:#fff; }
+.svc__title{ font-family:var(--f-display); font-weight:800; font-size:1.3rem; margin-bottom:.7rem; color:var(--txt-dark); transition:color .4s var(--ease); }
+.svc__desc{ color:var(--txt-dark-mute); font-size:.98rem; transition:color .4s var(--ease); }
+.svc__num{ position:absolute; inset-block-start:1.2rem; inset-inline-end:1.6rem; font-family:var(--f-display-en);
+  font-weight:900; font-size:2.4rem; color:rgba(20,22,27,.06); transition:color .4s; }
+
+/* ---------- 11. PROCESS ---------- */
+.process{ background:var(--ink); position:relative; }
+.process__flow{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem 1rem; margin-top:3.2rem; }
+.step{
+  position:relative; padding:1.8rem 1.5rem; border-radius:var(--radius);
+  background:var(--ink-2); border:1px solid var(--ink-4);
+  transition:transform .5s var(--ease), border-color .4s, background .4s;
+}
+.step:hover{ transform:translateY(-6px); border-color:var(--teal); background:var(--ink-3); }
+.step__n{ font-family:var(--f-display-en); font-weight:900; font-size:.85rem; color:var(--orange);
+  letter-spacing:.1em; margin-bottom:1rem; display:inline-block; }
+.step__icon{ width:48px; height:48px; border-radius:12px; display:grid; place-items:center; margin-bottom:1rem;
+  background:rgba(27,136,141,.12); color:var(--teal-2); }
+.step:hover .step__icon{ background:var(--teal); color:#fff; }
+.step__title{ font-family:var(--f-display); font-weight:800; font-size:1.12rem; margin-bottom:.4rem; }
+.step__desc{ color:var(--txt-mute); font-size:.9rem; }
+.step__connector{ position:absolute; inset-block-start:50%; inset-inline-end:-1rem; width:1rem; height:2px;
+  background:linear-gradient(90deg,var(--orange),transparent); z-index:1; }
+
+/* ---------- 12. WORK / PORTFOLIO ---------- */
+.work__head{ display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+.work__filters{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.4rem; }
+.work__filters button{
+  padding:.55rem 1.1rem; border-radius:100px; font-weight:700; font-size:.86rem;
+  color:var(--txt-mute); border:1px solid var(--ink-4); transition:.35s var(--ease);
+}
+.work__filters button.active,.work__filters button:hover{ color:#fff; background:var(--orange); border-color:var(--orange); }
+.work__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; margin-top:3rem; }
+.work-card{
+  position:relative; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/5;
+  border:1px solid var(--ink-4); background:var(--ink-2); cursor:pointer;
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.work-card.wide{ aspect-ratio:1/1; }
+.work-card:hover{ transform:translateY(-8px); box-shadow:var(--shadow); }
+.work-card__media{ position:absolute; inset:0; overflow:hidden; }
+.work-card__media img{ width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease); }
+.work-card:hover .work-card__media img{ transform:scale(1.07); }
+/* placeholder visual when no image supplied */
+.work-card__ph{ position:absolute; inset:0; display:grid; place-items:center; overflow:hidden;
+  background:radial-gradient(120% 80% at 30% 10%,rgba(236,106,44,.22),transparent 55%),
+             radial-gradient(120% 80% at 80% 90%,rgba(27,136,141,.28),transparent 55%),
+             var(--ink-3); }
+.work-card__ph .mock{ text-align:center; padding:1.5rem; }
+.work-card__ph .mock b{ display:block; font-family:var(--f-display); font-weight:900; font-size:1.6rem; }
+.work-card__ph .mock span{ font-family:var(--f-en); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--txt-mute); }
+.work-card__overlay{
+  position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; justify-content:flex-end;
+  padding:1.5rem; background:linear-gradient(to top,rgba(8,9,11,.92) 8%,rgba(8,9,11,.35) 45%,transparent 75%);
+  opacity:1; transition:.5s var(--ease);
+}
+.work-card__tag{ align-self:flex-start; font-family:var(--f-en); font-size:.68rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; padding:.3rem .7rem; border-radius:100px; background:rgba(236,106,44,.9); color:#fff;
+  transform:translateY(10px); opacity:0; transition:.5s var(--ease); }
+.work-card:hover .work-card__tag{ transform:translateY(0); opacity:1; }
+.work-card__title{ font-family:var(--f-display); font-weight:800; font-size:1.25rem; margin-top:.7rem; }
+.work-card__meta{ color:var(--txt-mute); font-size:.85rem; }
+.work-card__view{ position:absolute; inset-block-start:1.2rem; inset-inline-end:1.2rem; z-index:3;
+  width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.12); backdrop-filter:blur(8px);
+  display:grid; place-items:center; transform:scale(.6) rotate(-40deg); opacity:0; transition:.5s var(--ease); }
+.work-card:hover .work-card__view{ transform:scale(1) rotate(0); opacity:1; }
+
+/* ---------- 13. VS / WHY ---------- */
+.vs{ background:var(--cream); color:var(--txt-dark); position:relative; overflow:hidden; }
+.vs__wrap{ display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch; margin-top:3.2rem; position:relative; }
+.vs-col{ padding:2.4rem 2rem; border-radius:var(--radius-lg); }
+.vs-col--bad{ background:var(--ink); color:var(--cream); border:1px solid var(--ink-4); }
+.vs-col--good{ background:linear-gradient(165deg,var(--teal-deep),#0c4a4d); color:#fff; box-shadow:var(--shadow-teal); }
+.vs-col__head{ display:flex; align-items:center; gap:.7rem; font-family:var(--f-display); font-weight:800; font-size:1.25rem; margin-bottom:1.5rem; }
+.vs-col__badge{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-weight:900; }
+.vs-col--bad .vs-col__badge{ background:rgba(236,106,44,.18); color:var(--orange-2); }
+.vs-col--good .vs-col__badge{ background:rgba(255,255,255,.18); color:#fff; }
+.vs-list li{ display:flex; align-items:center; gap:.75rem; padding-block:.7rem; border-block-end:1px solid rgba(255,255,255,.08); font-size:1rem; }
+.vs-list li:last-child{ border:none; }
+.vs-list .ic{ flex:none; width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font-size:.7rem; font-weight:900; }
+.vs-col--bad .ic{ background:rgba(236,106,44,.2); color:var(--orange-2); }
+.vs-col--good .ic{ background:rgba(255,255,255,.2); color:#fff; }
+.vs__center{ display:grid; place-items:center; padding-inline:.5rem; position:relative; z-index:3; }
+.vs__badge{ width:66px; height:66px; border-radius:50%; display:grid; place-items:center; font-family:var(--f-display-en);
+  font-weight:900; font-size:1.1rem; background:var(--ink); color:#fff; border:4px solid var(--cream); box-shadow:var(--shadow); }
+.vs__note{ margin-top:2.6rem; text-align:center; font-family:var(--f-display); font-weight:800; font-size:clamp(1.2rem,2.4vw,1.7rem); }
+
+/* ---------- 14. GROWTH STATEMENT ---------- */
+.statement{ position:relative; overflow:hidden; background:var(--ink); text-align:center;
+  border-block-start:1px solid var(--ink-4); padding-block:clamp(6rem,11vw,10rem); }
+.statement__watermark{ position:absolute; inset-block-start:50%; inset-inline-start:50%; transform:translate(-50%,-50%);
+  font-family:var(--f-display-en); font-weight:900; font-size:clamp(8rem,30vw,26rem); color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.05); z-index:0; white-space:nowrap; letter-spacing:-.04em; }
+.statement__inner{ position:relative; z-index:2; max-width:60ch; margin-inline:auto; }
+.statement__words{ font-family:var(--f-display-en); font-weight:900; line-height:1; text-transform:uppercase;
+  font-size:clamp(2.6rem,8vw,6rem); letter-spacing:-.02em; margin-bottom:1.8rem; }
+.statement__words > span{ display:block; }
+.statement__words .w1{ color:#fff; } .statement__words .w2{ color:var(--orange); }
+.statement__words .w3{ color:var(--teal-2); } .statement__words .w4{ color:#fff; }
+html.lang-ar .statement__words{ font-family:var(--f-display); text-transform:none; font-size:clamp(2.2rem,7vw,4.6rem); line-height:1.22; }
+
+/* ---------- 15. TESTIMONIALS ---------- */
+.tst__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; margin-top:3.2rem; }
+.tst{ background:var(--ink-2); border:1px solid var(--ink-4); border-radius:var(--radius-lg); padding:2rem;
+  position:relative; transition:transform .5s var(--ease), border-color .5s; }
+.tst:hover{ transform:translateY(-6px); border-color:var(--teal); }
+.tst__quote{ font-size:3.5rem; font-family:var(--f-display-en); font-weight:900; color:var(--orange); line-height:.6; height:1.4rem; opacity:.8; }
+.tst__text{ font-size:1.02rem; margin:.6rem 0 1.6rem; color:var(--txt); } /* card is always dark ink-2, regardless of the section's own text color */
+.tst__author{ display:flex; align-items:center; gap:.9rem; }
+.tst__avatar{ width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg,var(--orange),var(--teal));
+  display:grid; place-items:center; font-family:var(--f-display-en); font-weight:800; color:#fff; }
+.tst__name{ font-weight:800; color:var(--txt); }
+.tst__role{ font-size:.85rem; color:var(--txt-mute); }
+.tst__stars{ color:var(--orange); margin-bottom:.8rem; letter-spacing:.15em; }
+
+/* ---------- 16. CTA / CONTACT ---------- */
+.cta{ position:relative; border-block-start:1px solid var(--ink-4); }
+.cta__panel{
+  position:relative; overflow:hidden; border-radius:var(--radius-lg);
+  background:linear-gradient(150deg,#17191F,#0c0d10); border:1px solid var(--ink-4);
+  padding:clamp(2.5rem,6vw,5rem); text-align:center;
+}
+.cta__panel .hero__glow--o{ inset-block-start:-40%; inset-inline-end:5%; opacity:.25; }
+.cta__panel .hero__glow--t{ inset-block-end:-40%; inset-inline-start:5%; opacity:.22; }
+.cta__title{ font-family:var(--f-display); font-weight:900; font-size:clamp(2rem,5vw,3.4rem); line-height:1.1; margin-bottom:1rem; position:relative; z-index:2; }
+.cta__sub{ color:var(--txt-mute); max-width:52ch; margin:0 auto 2.4rem; position:relative; z-index:2; }
+.cta__actions{ display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; z-index:2; }
+
+/* ---------- 17. FOOTER ---------- */
+.footer{ background:var(--ink-2); border-block-start:1px solid var(--ink-4); padding-block:4rem 2rem; }
+.footer__top{ display:grid; grid-template-columns:1.6fr 1fr 1fr 1.2fr; gap:2.5rem; }
+.footer__about{ color:var(--txt-mute); max-width:34ch; margin-top:1.2rem; font-size:.95rem; }
+.footer__col h4{ font-family:var(--f-display); font-weight:800; font-size:1.05rem; margin-bottom:1.1rem; }
+.footer__col a{ display:block; color:var(--txt-mute); padding-block:.4rem; transition:color .3s var(--ease), padding-inline .3s var(--ease); }
+.footer__col a:hover{ color:var(--orange); padding-inline-start:.4rem; }
+.footer__socials{ display:flex; gap:.6rem; margin-top:1.4rem; }
+.footer__socials a{ width:42px; height:42px; border-radius:12px; border:1px solid var(--ink-4);
+  display:grid; place-items:center; color:var(--txt-mute); transition:.35s var(--ease); }
+.footer__socials a:hover{ background:var(--orange); color:#fff; border-color:var(--orange); transform:translateY(-4px); }
+.footer__bottom{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  margin-top:3rem; padding-top:1.6rem; border-top:1px solid var(--ink-4); color:var(--txt-dim); font-size:.85rem; }
+.footer__tagline{ font-family:var(--f-en); font-weight:700; letter-spacing:.02em; }
+.footer__tagline .accent-t{ color:var(--teal-2); }
+
+/* ---------- 18. REVEAL ANIMATIONS ---------- */
+[data-reveal]{ opacity:0; transform:translateY(32px); transition:opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+[data-reveal].in{ opacity:1; transform:none; }
+[data-reveal-delay="1"]{ transition-delay:.08s; }
+[data-reveal-delay="2"]{ transition-delay:.16s; }
+[data-reveal-delay="3"]{ transition-delay:.24s; }
+[data-reveal-delay="4"]{ transition-delay:.32s; }
+[data-reveal-delay="5"]{ transition-delay:.40s; }
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition-duration:.001ms !important; }
+  [data-reveal]{ opacity:1; transform:none; }
+}
+
+/* ---------- 19. SECTION HEADER HELPER ---------- */
+.sec-head{ max-width:70ch; }
+.sec-head--center{ margin-inline:auto; text-align:center; }
+.sec-head--center .eyebrow{ justify-content:center; }
+.sec-head .lead{ margin-top:1.1rem; }
+
+/* ---------- 19a. SELECTED CLIENTS (logo wall) ---------- */
+.clients{ background:var(--cream); color:var(--txt-dark); } /* was a near-duplicate off-white; now the one existing light token */
+.clients .eyebrow{ color:var(--orange-deep); }
+.clients .lead{ color:var(--txt-dark-mute); }
+.logowall{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  margin-top:clamp(2.6rem,5vw,3.8rem);
+  border-block-start:1px solid rgba(20,22,27,.08);
+  border-inline-start:1px solid rgba(20,22,27,.08);
+}
+.logo-cell{
+  position:relative; aspect-ratio:3/2; display:grid; place-items:center;
+  border-inline-end:1px solid rgba(20,22,27,.08);
+  border-block-end:1px solid rgba(20,22,27,.08);
+  overflow:hidden;
+}
+.logo-cell img{
+  position:absolute; inset:0; margin:auto; object-fit:contain;
+  transition:opacity .55s var(--ease), transform .55s var(--ease);
+}
+.logo-cell .lm{ max-width:60%; max-height:54%; opacity:.5; filter:none; }
+.logo-cell .lc{ max-width:74%; max-height:70%; opacity:0; transform:scale(.94); border-radius:14px; }
+.logo-cell:hover .lm{ opacity:0; transform:scale(1.02); }
+.logo-cell:hover .lc{ opacity:1; transform:scale(1); box-shadow:0 22px 44px -20px rgba(20,22,27,.45); }
+.clients__note{ text-align:center; margin-top:2.4rem; color:var(--txt-dark-mute); font-size:.98rem; }
+
+/* ---------- 19b. FEATURED CASE STUDIES ---------- */
+/* Editorial hierarchy: the first featured case (.case--feature) runs full-width as the
+   lead story; the rest follow in a calmer supporting row. Same component, same tokens —
+   only scale and rhythm change, so the hero card never looks like a different system. */
+.cases{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem; margin-top:3.6rem; }
+.case{
+  position:relative; border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
+  background:var(--ink-2); border:1px solid var(--ink-4); aspect-ratio:4/3;
+  opacity:0; transform:translateY(28px);
+  transition:opacity .7s var(--ease-out), transform .7s var(--ease-out),
+             box-shadow .55s var(--ease), border-color .4s;
+}
+.case.in{ opacity:1; transform:none; }
+.case:nth-child(2).in{ transition-delay:.1s; }
+.case:nth-child(3).in{ transition-delay:.2s; }
+.case:hover{ transform:translateY(-10px); box-shadow:var(--shadow); border-color:var(--orange); }
+.case--feature{ grid-column:1 / -1; aspect-ratio:16/9; }
+.case__media{ position:absolute; inset:0; }
+.case__media img{ width:100%; height:100%; object-fit:cover; object-position:center 32%; transform:scale(1.06); transition:transform 1s var(--ease); }
+.case.in .case__media img{ transform:scale(1); }
+.case:hover .case__media img{ transform:scale(1.08); }
+.case__grad{ position:absolute; inset:0; background:linear-gradient(to top,rgba(8,9,11,.96) 12%,rgba(8,9,11,.5) 45%,rgba(8,9,11,.1) 75%); }
+.case__body{ position:absolute; inset-inline:0; inset-block-end:0; padding:1.8rem; z-index:2; }
+.case--feature .case__body{ padding:clamp(1.8rem,3.6vw,2.8rem); max-width:64ch; }
+.case__top{ display:flex; align-items:center; gap:.6rem; margin-bottom:.9rem; }
+.case__ind{ display:inline-flex; align-items:center; gap:.4rem; font-family:var(--f-en); font-size:.68rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:#fff; background:rgba(236,106,44,.92); padding:.32rem .7rem;
+  border-radius:100px; }
+.case__logo{ width:34px; height:34px; border-radius:9px; background:var(--white); display:grid; place-items:center;
+  padding:5px; box-shadow:var(--shadow-sm); flex:none; }
+.case__logo img{ width:100%; height:100%; object-fit:contain; }
+.case__name{ font-family:var(--f-display); font-weight:900; font-size:1.7rem; line-height:1.1; margin-bottom:.4rem; }
+.case--feature .case__name{ font-size:clamp(1.9rem,3.2vw,2.7rem); }
+.case__role{ color:var(--txt-mute); font-size:.9rem; margin-bottom:.7rem; }
+.case__challenge{ color:rgba(255,255,255,.82); font-size:.9rem; line-height:1.6; margin-bottom:1.1rem;
+  max-width:52ch; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.case--feature .case__challenge{ -webkit-line-clamp:3; font-size:1rem; max-width:58ch; }
+.case__kpis{ display:flex; gap:1.4rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+.case__kpi b{ display:block; font-family:var(--f-display-en); font-weight:800; font-size:1.35rem; color:var(--teal-2); line-height:1; }
+.case--feature .case__kpi b{ font-size:1.8rem; }
+.case__kpi span{ font-size:.72rem; color:var(--txt-mute); }
+.case__cta{ display:inline-flex; align-items:center; gap:.5rem; font-weight:800; font-size:.9rem; color:#fff;
+  border-block-start:1px solid rgba(255,255,255,.14); padding-top:1rem; width:100%; }
+.case__cta svg{ transition:transform .35s var(--ease); }
+html.lang-ar .case__cta svg{ transform:scaleX(-1); }
+.case:hover .case__cta svg{ transform:translateX(4px); }
+html.lang-ar .case:hover .case__cta svg{ transform:scaleX(-1) translateX(4px); }
+.case__count{ position:absolute; inset-block-start:1.2rem; inset-inline-end:1.2rem; z-index:2; font-family:var(--f-en);
+  font-size:.72rem; font-weight:700; color:#fff; background:rgba(0,0,0,.5); backdrop-filter:blur(6px);
+  padding:.32rem .6rem; border-radius:100px; }
+
+/* ---------- 19c. PORTFOLIO GALLERY ---------- */
+.portfolio{ background:var(--ink); }
+.gallery{ columns:4; column-gap:1.1rem; margin-top:3.2rem; }
+.g-item{
+  position:relative; break-inside:avoid; margin-bottom:1.1rem; border-radius:var(--radius); overflow:hidden;
+  cursor:pointer; background:var(--ink-2); border:1px solid var(--ink-4); display:block;
+  opacity:0; transform:translateY(20px); transition:opacity .6s var(--ease), transform .6s var(--ease), box-shadow .45s;
+}
+.g-item.in{ opacity:1; transform:none; }
+.g-item:hover{ box-shadow:var(--shadow); }
+.g-item img{ width:100%; display:block; transition:transform .8s var(--ease); }
+.g-item:hover img{ transform:scale(1.06); }
+.g-item__ov{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:1.1rem;
+  background:linear-gradient(to top,rgba(8,9,11,.9),rgba(8,9,11,0) 55%); opacity:0; transition:opacity .4s var(--ease); }
+.g-item:hover .g-item__ov{ opacity:1; }
+.g-item__client{ font-family:var(--f-display); font-weight:800; font-size:1.05rem; transform:translateY(8px); transition:transform .4s var(--ease); }
+.g-item:hover .g-item__client{ transform:none; }
+.g-item__proj{ font-size:.8rem; color:var(--txt-mute); transform:translateY(8px); transition:transform .45s var(--ease); }
+.g-item:hover .g-item__proj{ transform:none; }
+.g-item__zoom{ position:absolute; inset-block-start:.9rem; inset-inline-end:.9rem; width:36px; height:36px; border-radius:50%;
+  background:rgba(255,255,255,.14); backdrop-filter:blur(6px); display:grid; place-items:center; color:#fff;
+  transform:scale(.5); opacity:0; transition:.4s var(--ease); }
+.g-item:hover .g-item__zoom{ transform:scale(1); opacity:1; }
+.gallery.empty::after{ content:"—"; color:var(--txt-dim); }
+
+/* ---------- 19d. LIGHTBOX ---------- */
+.lightbox{ position:fixed; inset:0; z-index:1200; display:none; align-items:center; justify-content:center;
+  background:rgba(6,7,9,.94); backdrop-filter:blur(10px); padding:clamp(1rem,4vw,3rem); }
+.lightbox.open{ display:flex; animation:lbin .3s var(--ease); }
+@keyframes lbin{ from{ opacity:0; } }
+.lightbox__stage{ max-width:min(92vw,720px); max-height:88vh; display:flex; flex-direction:column; gap:1rem; }
+.lightbox__stage img{ max-width:100%; max-height:76vh; object-fit:contain; border-radius:var(--radius);
+  box-shadow:var(--shadow); background:var(--ink-2); }
+.lightbox__cap{ text-align:center; display:flex; flex-direction:column; gap:.15rem; }
+.lightbox__cap b{ font-family:var(--f-display); font-weight:800; font-size:1.15rem; }
+.lightbox__cap span{ color:var(--txt-mute); font-size:.9rem; }
+.lightbox__cap em{ color:var(--txt-dim); font-size:.78rem; font-family:var(--f-en); font-style:normal; letter-spacing:.1em;
+  direction:ltr; unicode-bidi:isolate; } /* "2 / 5" is a neutral LTR token — without this the Arabic (RTL) context mirrors it to "5 / 2" */
+.lightbox__close{ position:absolute; inset-block-start:1.2rem; inset-inline-end:1.4rem; font-size:2.4rem; line-height:1;
+  color:#fff; opacity:.7; transition:.3s var(--ease); }
+.lightbox__close:hover{ opacity:1; transform:rotate(90deg); }
+.lightbox__nav{ position:absolute; inset-block-start:50%; transform:translateY(-50%); width:54px; height:54px; border-radius:50%;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); color:#fff; font-size:1.8rem; line-height:1;
+  display:grid; place-items:center; transition:.3s var(--ease); backdrop-filter:blur(6px); }
+.lightbox__nav:hover{ background:var(--orange); border-color:var(--orange); }
+.lightbox__prev{ inset-inline-start:1.4rem; }
+.lightbox__next{ inset-inline-end:1.4rem; }
+html[dir="rtl"] .lightbox__prev{ transform:translateY(-50%) scaleX(-1); }
+html[dir="rtl"] .lightbox__next{ transform:translateY(-50%) scaleX(-1); }
+
+/* ---------- 19e. CASE STUDY MODAL ---------- */
+.casemodal{ position:fixed; inset:0; z-index:1001; display:none; align-items:stretch; justify-content:center;
+  background:rgba(6,7,9,.7); backdrop-filter:blur(8px); }
+.casemodal.open{ display:flex; animation:lbin .3s var(--ease); }
+.casemodal__panel{ position:relative; width:min(980px,100%); background:var(--ink); overflow:hidden;
+  box-shadow:var(--shadow); animation:cmin .5s var(--ease-out); }
+@keyframes cmin{ from{ transform:translateY(24px); opacity:0; } }
+.casemodal__close{ position:absolute; inset-block-start:1.1rem; inset-inline-end:1.3rem; z-index:5; width:44px; height:44px;
+  border-radius:50%; background:rgba(0,0,0,.45); backdrop-filter:blur(8px); color:#fff; font-size:1.8rem; line-height:1;
+  transition:.3s var(--ease); }
+.casemodal__close:hover{ background:var(--orange); transform:rotate(90deg); }
+.casemodal__scroll{ overflow-y:auto; max-height:100vh; }
+.cm-hero{ position:relative; aspect-ratio:16/10; overflow:hidden; }
+.cm-hero img{ width:100%; height:100%; object-fit:cover; object-position:center 32%; }
+.cm-hero__grad{ position:absolute; inset:0; background:linear-gradient(to top,var(--ink) 4%,rgba(14,15,18,.2) 55%,transparent); }
+.cm-hero__body{ position:absolute; inset-inline:0; inset-block-end:0; padding:clamp(1.4rem,4vw,2.6rem); }
+.cm-hero__ind{ display:inline-block; font-family:var(--f-en); font-size:.7rem; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:#fff; background:var(--orange); padding:.32rem .7rem; border-radius:100px; margin-bottom:.8rem; }
+.cm-hero__name{ font-family:var(--f-display); font-weight:900; font-size:clamp(1.8rem,4vw,2.8rem); line-height:1.05; }
+.cm-hero__role{ color:var(--txt-mute); margin-top:.4rem; }
+.cm-content{ padding:clamp(1.5rem,4vw,2.8rem); }
+.cm-kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2.4rem; }
+.cm-kpi{ background:var(--ink-2); border:1px solid var(--ink-4); border-radius:var(--radius); padding:1.2rem 1rem; text-align:center; }
+.cm-kpi b{ display:block; font-family:var(--f-display-en); font-weight:900; font-size:1.7rem;
+  background:linear-gradient(120deg,var(--orange),var(--teal-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.cm-kpi span{ font-size:.82rem; color:var(--txt-mute); }
+.cm-block{ margin-bottom:1.7rem; }
+.cm-block h4{ font-family:var(--f-en); font-size:.74rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--orange); margin-bottom:.5rem; }
+html.lang-ar .cm-block h4{ font-family:var(--f-ar); letter-spacing:0; font-size:.95rem; }
+.cm-block p{ color:var(--txt); font-size:1.02rem; line-height:1.8; }
+.cm-gallery{ display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin-top:2rem; }
+.cm-gallery img{ width:100%; aspect-ratio:1; object-fit:cover; border-radius:var(--radius-sm); cursor:pointer;
+  border:1px solid var(--ink-4); transition:transform .4s var(--ease); }
+.cm-gallery img:hover{ transform:scale(1.03); }
+body.modal-open{ overflow:hidden; }
+
+/* ---------- 20. RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .hero__inner{ grid-template-columns:1fr; }
+  .hero__visual{ min-height:360px; order:-1; }
+  .stats{ grid-template-columns:repeat(2,1fr); }
+  .services__grid{ grid-template-columns:repeat(2,1fr); }
+  .process__flow{ grid-template-columns:repeat(2,1fr); }
+  .work__grid{ grid-template-columns:repeat(2,1fr); }
+  .tst__grid{ grid-template-columns:1fr; }
+  .footer__top{ grid-template-columns:1fr 1fr; }
+  .step__connector{ display:none; }
+}
+@media (max-width:768px){
+  /* Dedicated dimming layer behind the slide-in menu — without it the busy hero
+     artwork keeps competing with the menu for attention the instant it opens. */
+  .nav__scrim{ position:fixed; inset:0; background:rgba(6,7,9,.6); backdrop-filter:blur(2px);
+    opacity:0; pointer-events:none; transition:opacity .45s var(--ease); z-index:98; }
+  body.menu-open .nav__scrim{ opacity:1; pointer-events:auto; }
+  .nav__links{ position:fixed; inset-block:0; inset-inline-end:0; height:100svh; width:min(82vw,360px);
+    flex-direction:column; align-items:flex-start; justify-content:center; gap:.4rem;
+    background:var(--ink-2); padding:2.5rem 2rem; transform:translateX(100%); transition:transform .45s var(--ease);
+    box-shadow:var(--shadow); z-index:99; border-inline-start:1px solid var(--ink-4); }
+  html[dir="rtl"] .nav__links{ transform:translateX(-100%); }
+  body.menu-open .nav__links{ transform:translateX(0) !important; }
+  .nav__links a{ font-size:1.25rem; width:100%; padding-block:.7rem; }
+  .nav__cta{ display:none; }
+  .nav__cta--mobile{ display:inline-flex; justify-content:center; width:100%; margin-top:1.4rem; font-size:1rem; }
+  .burger{ display:block; z-index:100; }
+  .vs__wrap{ grid-template-columns:1fr; gap:2.5rem; }
+  .vs__center{ position:relative; }
+  .footer__bottom{ flex-direction:column; text-align:center; }
+}
+@media (max-width:560px){
+  .stats{ grid-template-columns:1fr 1fr; }
+  .services__grid,.process__flow,.work__grid{ grid-template-columns:1fr; }
+  .footer__top{ grid-template-columns:1fr; }
+  .hero__visual{ min-height:320px; }
+  .float-card--a{ width:170px; } .float-card--b{ width:160px; } .float-card--c{ width:180px; }
+}
+
+/* ---- responsive: portfolio components ---- */
+@media (max-width:1024px){
+  .gallery{ columns:3; }
+  .cm-gallery{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:1024px){
+  .logowall{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:768px){
+  .gallery{ columns:2; }
+  .cm-kpis{ grid-template-columns:repeat(3,1fr); gap:.6rem; }
+  .cm-kpi b{ font-size:1.3rem; }
+}
+@media (max-width:560px){
+  .cases{ grid-template-columns:1fr; }
+  .gallery{ columns:1; }
+  .logowall{ grid-template-columns:repeat(2,1fr); }
+  .logo-cell{ aspect-ratio:1/1; }
+  .case{ aspect-ratio:4/5; }
+  .case--feature{ aspect-ratio:4/5; }
+  .cm-gallery{ grid-template-columns:1fr 1fr; }
+  .lightbox__nav{ width:44px; height:44px; }
+}
+
+/* language visibility utility — authoritative over component display rules */
+.i18n-ar,.i18n-en{ display:none !important; }
+html.lang-ar .i18n-ar{ display:revert !important; }
+html.lang-en .i18n-en{ display:revert !important; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ NAV ============================================================ -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#home" class="logo" aria-label="iCreative Agency">
+      <span class="logo__mark"><span class="logo__i"></span></span>
+      <span class="logo__text">
+        <span class="logo__name">i<b>CREATIVE</b></span>
+        <span class="logo__sub">AGENCY</span>
+      </span>
+    </a>
+
+    <div class="nav__scrim" id="navScrim" aria-hidden="true"></div>
+    <nav class="nav__links" id="navLinks" aria-label="Main">
+      <a href="#work" data-i18n="nav.work">أعمالنا</a>
+      <a href="#portfolio" data-i18n="nav.portfolio">المعرض</a>
+      <a href="#testimonials" data-i18n="nav.reviews">آراء العملاء</a>
+      <a href="#services" data-i18n="nav.services">خدماتنا</a>
+      <a href="#process" data-i18n="nav.process">منهجيتنا</a>
+      <a href="#contact" class="btn nav__cta--mobile" data-i18n="nav.cta">تواصل معنا</a>
+    </nav>
+
+    <div class="nav__right">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <span class="lang-toggle__pill" aria-hidden="true"></span>
+        <button type="button" data-lang="ar" class="active">ع</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a href="#contact" class="btn nav__cta" data-i18n="nav.cta">تواصل معنا</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ HERO ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero__bg">
+    <div class="hero__grid-lines"></div>
+    <div class="hero__glow hero__glow--o"></div>
+    <div class="hero__glow hero__glow--t"></div>
+    <div class="hero__watermark">GROWTH</div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__badge" data-reveal>
+        <span class="pulse"></span>
+        <span data-i18n="hero.badge">وكالة نمو رقمية متكاملة</span>
+      </span>
+
+      <h1 class="hero__title" data-reveal data-reveal-delay="1">
+        <span class="i18n-ar">نحن لا نصنع محتوى<span class="accent-o">…</span><br>نحن نبني <span class="grow">نموًا</span>.</span>
+        <span class="i18n-en">We don't create content.<br>We build <span class="grow">growth</span>.</span>
+      </h1>
+
+      <p class="hero__sub" data-reveal data-reveal-delay="2">
+        <span class="i18n-ar"><b>استراتيجية</b> تفهم مشروعك، <b>محتوى</b> يعبّر عنك، و<b>نتائج</b> تنمّي أعمالك. من الفكرة إلى النمو.</span>
+        <span class="i18n-en"><b>Strategy</b> that understands your business, <b>content</b> that speaks for you, and <b>results</b> that grow it — from idea to growth.</span>
+      </p>
+
+      <div class="hero__cta" data-reveal data-reveal-delay="3">
+        <a href="#contact" class="btn">
+          <span data-i18n="hero.cta1">ابدأ مشروعك</span>
+          <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#work" class="btn btn--ghost">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <span data-i18n="hero.cta2">شاهد أعمالنا</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Floating dashboard mock -->
+    <div class="hero__visual" aria-hidden="true" data-reveal data-reveal-delay="2">
+      <div class="hero__chart">
+        <span class="chip-brand">Performance Overview</span>
+        <svg viewBox="0 0 300 120" preserveAspectRatio="none">
+          <defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#EC6A2C" stop-opacity=".35"/>
+            <stop offset="100%" stop-color="#EC6A2C" stop-opacity="0"/>
+          </linearGradient></defs>
+          <path class="spark-area" d="M0,95 L30,88 L60,92 L90,70 L120,78 L150,55 L180,60 L210,38 L240,44 L270,22 L300,14 L300,120 L0,120 Z"/>
+          <path class="spark-line" d="M0,95 L30,88 L60,92 L90,70 L120,78 L150,55 L180,60 L210,38 L240,44 L270,22 L300,14"/>
+        </svg>
+      </div>
+
+      <div class="float-card float-card--a">
+        <div class="float-card__label">Reach</div>
+        <div class="float-card__val" data-count="128" data-suffix="K">0</div>
+        <div class="float-card__delta">▲ 15.6%</div>
+      </div>
+      <div class="float-card float-card--b">
+        <div class="float-card__label">Engagement</div>
+        <div class="float-card__val" data-count="32" data-suffix="K">0</div>
+        <div class="float-card__delta">▲ 18.2%</div>
+      </div>
+      <div class="float-card float-card--c">
+        <div class="float-card__label">Conversions</div>
+        <div class="float-card__val" data-count="3.7" data-suffix="K">0</div>
+        <div class="float-card__delta">▲ 21.5%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span class="mouse"></span>
+    <span data-i18n="hero.scroll">اكتشف</span>
+  </div>
+</section>
+
+<!-- ============================================================ FEATURED CASE STUDIES ============================================================ -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow" data-i18n="work.eyebrow">أعمال مختارة</span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">قصص نجاح <span class="accent-o">تبني علامات</span></span>
+        <span class="i18n-en">Case studies that <span class="accent-o">build brands</span></span>
+      </h2>
+      <p class="lead" style="margin-inline:auto;">
+        <span class="i18n-ar">مشاريع حقيقية نفّذناها من الفكرة إلى النتيجة — استراتيجية، هوية، محتوى، وحملات.</span>
+        <span class="i18n-en">Real projects we delivered from idea to result — strategy, identity, content, and campaigns.</span>
+      </p>
+    </div>
+    <div class="cases" id="casesGrid"><!-- JS-rendered featured case studies; each .case handles its own reveal --></div>
+  </div>
+</section>
+
+<!-- ============================================================ SELECTED CLIENTS ============================================================ -->
+<section class="section clients" id="clients">
+  <div class="container">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow"><span class="i18n-ar">عملاء مختارون</span><span class="i18n-en">Selected Clients</span></span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">علاماتٌ <span class="accent-o">وثقت بنا</span></span>
+        <span class="i18n-en">Brands that <span class="accent-o">trust us</span></span>
+      </h2>
+      <p class="lead" style="margin-inline:auto;">
+        <span class="i18n-ar">على مدى السنوات، وثقت بنا علاماتٌ طموحة في المطاعم والكافيهات، والعقارات، والسيارات، والأثاث، والتجميل — وغيرها الكثير.</span>
+        <span class="i18n-en">Over the years, ambitious brands across hospitality, real estate, automotive, furniture, beauty and beyond have trusted iCreative.</span>
+      </p>
+    </div>
+
+    <!-- Logo wall — monochrome by default, brand colours on hover. Not clickable. -->
+    <div class="logowall" data-reveal data-reveal-delay="1">
+      <div class="logo-cell"><img class="lm" src="assets/logos/bite.png" alt="Bite"><img class="lc" src="assets/logos/bite-c.jpg" alt="Bite" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/coco.png" alt="Coco Café"><img class="lc" src="assets/logos/coco-c.jpg" alt="Coco Café" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/demas.png" alt="Demas"><img class="lc" src="assets/logos/demas-c.jpg" alt="Demas" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/burgerx.png" alt="Burger X"><img class="lc" src="assets/logos/burgerx-c.jpg" alt="Burger X" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/ladro.png" alt="Ladro Café"><img class="lc" src="assets/logos/ladro-c.jpg" alt="Ladro Café" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/khozondar.png" alt="El-Khozondar"><img class="lc" src="assets/logos/khozondar-c.jpg" alt="El-Khozondar" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/abwabsham.png" alt="Abwab Al-Sham"><img class="lc" src="assets/logos/abwabsham-c.jpg" alt="Abwab Al-Sham" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/georgessara.png" alt="Georges Sara"><img class="lc" src="assets/logos/georgessara-c.jpg" alt="Georges Sara" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/elite.png" alt="Elite Development"><img class="lc" src="assets/logos/elite-c.jpg" alt="Elite Development" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/sonya.png" alt="Sonya Construction"><img class="lc" src="assets/logos/sonya-c.jpg" alt="Sonya Construction" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/autoway.png" alt="Auto Way"><img class="lc" src="assets/logos/autoway-c.jpg" alt="Auto Way" aria-hidden="true"></div>
+      <div class="logo-cell"><img class="lm" src="assets/logos/elevate.png" alt="Elevate Gallery"><img class="lc" src="assets/logos/elevate-c.jpg" alt="Elevate Gallery" aria-hidden="true"></div>
+    </div>
+
+    <p class="clients__note" data-reveal>
+      <span class="i18n-ar">و علاماتٌ أخرى كثيرة وثقت في iCreative لبناء نموّها.</span>
+      <span class="i18n-en">…and many more brands who trust iCreative to build their growth.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ PORTFOLIO GALLERY ============================================================ -->
+<section class="section portfolio" id="portfolio">
+  <div class="container">
+    <div class="work__head">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow" data-i18n="portfolio.eyebrow">معرض الأعمال</span>
+        <h2 class="h-sec">
+          <span class="i18n-ar">تصفّح <span class="accent-t">حسب المجال</span></span>
+          <span class="i18n-en">Browse <span class="accent-t">by industry</span></span>
+        </h2>
+      </div>
+      <div class="work__filters" id="galleryFilters" data-reveal data-reveal-delay="1"><!-- JS-rendered filters --></div>
+    </div>
+    <div class="gallery" id="galleryGrid"><!-- JS-rendered gallery --></div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lbClose" aria-label="Close">&times;</button>
+  <button class="lightbox__nav lightbox__prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+  <figure class="lightbox__stage">
+    <img id="lbImg" src="" alt="">
+    <figcaption class="lightbox__cap"><b id="lbClient"></b><span id="lbProject"></span><em id="lbCount"></em></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__next" id="lbNext" aria-label="Next">&#8250;</button>
+</div>
+
+<!-- Case study modal -->
+<div class="casemodal" id="caseModal" aria-hidden="true">
+  <div class="casemodal__panel">
+    <button class="casemodal__close" id="cmClose" aria-label="Close">&times;</button>
+    <div class="casemodal__scroll" id="cmScroll"><!-- JS-rendered --></div>
+  </div>
+</div>
+
+<!-- ============================================================ STATS ============================================================ -->
+<section class="section" id="stats">
+  <div class="container">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow" data-i18n="stats.eyebrow">أرقام تتحدث</span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">نتائج حقيقية، <span class="accent-o">لا مجرد لايكات</span></span>
+        <span class="i18n-en">Real results, <span class="accent-o">not just likes</span></span>
+      </h2>
+    </div>
+    <div class="stats" style="margin-top:3.2rem;">
+      <div class="stat" data-reveal data-reveal-delay="1">
+        <div class="stat__num"><span data-count="128" data-suffix="K+">0</span></div>
+        <div class="stat__label" data-i18n="stats.reach">وصول شهري للعلامات</div>
+      </div>
+      <div class="stat" data-reveal data-reveal-delay="2">
+        <div class="stat__num"><span data-count="240" data-suffix="+">0</span></div>
+        <div class="stat__label" data-i18n="stats.projects">مشروع تم إطلاقه</div>
+      </div>
+      <div class="stat" data-reveal data-reveal-delay="3">
+        <div class="stat__num"><span data-count="98" data-suffix="%">0</span></div>
+        <div class="stat__label" data-i18n="stats.retention">نسبة رضا العملاء</div>
+      </div>
+      <div class="stat" data-reveal data-reveal-delay="4">
+        <div class="stat__num"><span data-count="3.4" data-suffix="x">0</span></div>
+        <div class="stat__label" data-i18n="stats.roi">متوسط نمو العائد</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ STATEMENT ============================================================ -->
+<section class="section statement">
+  <div class="statement__watermark" aria-hidden="true">iCREATIVE</div>
+  <div class="container statement__inner" data-reveal>
+    <div class="statement__words">
+      <span class="w1"><span class="i18n-ar">فكّر.</span><span class="i18n-en">THINK.</span></span>
+      <span class="w2"><span class="i18n-ar">خطّط.</span><span class="i18n-en">PLAN.</span></span>
+      <span class="w3"><span class="i18n-ar">نفّذ.</span><span class="i18n-en">EXECUTE.</span></span>
+      <span class="w4"><span class="i18n-ar">انمُ.</span><span class="i18n-en">GROW.</span></span>
+    </div>
+    <p class="lead" style="margin-inline:auto; color:var(--txt-mute);">
+      <span class="i18n-ar">نحن لا ننشر… نحن نبني نموًا. إحنا بنفهم المشروع، بنبني استراتيجية، وبعدين نصنع محتوى يخدم هدف حقيقي.</span>
+      <span class="i18n-en">We don't just publish — we build growth. We understand the business, build the strategy, then create content that serves a real goal.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ TESTIMONIALS ============================================================ -->
+<section class="section section--cream" id="testimonials">
+  <div class="container">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow" data-i18n="tst.eyebrow">آراء عملائنا</span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">قصص <span class="accent-t">نمو</span> حقيقية</span>
+        <span class="i18n-en">Real <span class="accent-t">growth</span> stories</span>
+      </h2>
+    </div>
+
+    <div class="tst__grid">
+      <article class="tst" data-reveal data-reveal-delay="1">
+        <div class="tst__stars">★★★★★</div>
+        <p class="tst__text"><span class="i18n-ar">"حجوزات المطعم زادت أكثر من الضعف خلال شهرين. أخيرًا شعرنا أن التسويق يخدم هدفًا واضحًا."</span><span class="i18n-en">"Our restaurant bookings more than doubled in two months. Finally marketing that serves a clear goal."</span></p>
+        <div class="tst__author"><div class="tst__avatar">ن</div><div><div class="tst__name"><span class="i18n-ar">نور الدمشقي</span><span class="i18n-en">Nour Al-Dimashqi</span></div><div class="tst__role"><span class="i18n-ar">صاحب مطعم</span><span class="i18n-en">Restaurant owner</span></div></div></div>
+      </article>
+
+      <article class="tst" data-reveal data-reveal-delay="2">
+        <div class="tst__stars">★★★★★</div>
+        <p class="tst__text"><span class="i18n-ar">"الفرق أنهم يفكّرون كشركاء لا كمنفّذين. كل قرار مبني على أرقام، والنتائج تتحدّث عن نفسها."</span><span class="i18n-en">"They think like partners, not vendors. Every decision is data-backed, and the results speak for themselves."</span></p>
+        <div class="tst__author"><div class="tst__avatar">ر</div><div><div class="tst__name"><span class="i18n-ar">رامي خالد</span><span class="i18n-en">Rami Khaled</span></div><div class="tst__role"><span class="i18n-ar">مؤسس علامة تجميل</span><span class="i18n-en">Beauty brand founder</span></div></div></div>
+      </article>
+
+      <article class="tst" data-reveal data-reveal-delay="3">
+        <div class="tst__stars">★★★★★</div>
+        <p class="tst__text"><span class="i18n-ar">"محتوى يعبّر عنّا فعلًا. هويتنا أصبحت واضحة ومتميّزة، والتفاعل تضاعف بشكل ملحوظ."</span><span class="i18n-en">"Content that truly represents us. Our identity is now clear and distinct, and engagement multiplied."</span></p>
+        <div class="tst__author"><div class="tst__avatar">س</div><div><div class="tst__name"><span class="i18n-ar">سونيا مراد</span><span class="i18n-en">Sonia Murad</span></div><div class="tst__role"><span class="i18n-ar">مديرة تسويق عقاري</span><span class="i18n-en">Real-estate marketing lead</span></div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SERVICES ============================================================ -->
+<section class="section section--cream" id="services">
+  <span class="dot-grid" style="inset-block-start:3rem; inset-inline-end:3rem;"></span>
+  <div class="container">
+    <div class="sec-head" data-reveal>
+      <span class="eyebrow" data-i18n="services.eyebrow">ماذا نقدّم</span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">خدمات تبني <span class="accent-t">النمو</span>،<br>لا مجرد منشورات</span>
+        <span class="i18n-en">Services that build <span class="accent-t">growth</span>,<br>not just posts</span>
+      </h2>
+      <p class="lead" data-i18n="services.lead">نغطّي رحلتك بالكامل — من فهم مشروعك ووضع الاستراتيجية، إلى الإبداع والتنفيذ وقياس النتائج.</p>
+    </div>
+
+    <div class="services__grid">
+      <article class="svc" data-reveal data-reveal-delay="1">
+        <span class="svc__num">01</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">بحث وفهم عميق</span><span class="i18n-en">Deep Research</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">ندرس مشروعك وجمهورك ومنافسيك قبل أن نلتقط الكاميرا — كل قرار مبني على بيانات.</span><span class="i18n-en">We study your business, audience and competitors before touching a camera — every decision is data-led.</span></p>
+      </article>
+
+      <article class="svc" data-reveal data-reveal-delay="2">
+        <span class="svc__num">02</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">استراتيجية مخصّصة</span><span class="i18n-en">Custom Strategy</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">خطة واضحة بأهداف قابلة للقياس ورسالة تخدم مشروعك — لا نشر عشوائي.</span><span class="i18n-en">A clear plan with measurable goals and a message that serves your business — no random posting.</span></p>
+      </article>
+
+      <article class="svc" data-reveal data-reveal-delay="3">
+        <span class="svc__num">03</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 20 20 4M14 4h6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14v6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">محتوى إبداعي</span><span class="i18n-en">Creative Content</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">تصوير ومونتاج وتصميم بمستوى احترافي، بهدف واضح يعبّر عن هويتك.</span><span class="i18n-en">Professional shooting, editing and design — with a clear purpose that expresses your identity.</span></p>
+      </article>
+
+      <article class="svc" data-reveal data-reveal-delay="1">
+        <span class="svc__num">04</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 11 21 4l-4 16-4-6-6-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">حملات إعلانية ذكية</span><span class="i18n-en">Smart Ad Campaigns</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">إدارة إعلانات Meta وGoogle بميزانية مدروسة تحوّل المشاهدات إلى عملاء.</span><span class="i18n-en">Meta &amp; Google ads managed on a smart budget that turns views into customers.</span></p>
+      </article>
+
+      <article class="svc" data-reveal data-reveal-delay="2">
+        <span class="svc__num">05</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">تحليل وقياس مستمر</span><span class="i18n-en">Analytics &amp; Insights</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">نراقب الأداء ونحسّنه باستمرار — قرارات مبنية على أرقام لا على تخمين.</span><span class="i18n-en">We track and continuously optimize performance — decisions from numbers, not guesses.</span></p>
+      </article>
+
+      <article class="svc" data-reveal data-reveal-delay="3">
+        <span class="svc__num">06</span>
+        <div class="svc__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 21h6M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="svc__title"><span class="i18n-ar">هوية وعلامة تجارية</span><span class="i18n-en">Branding &amp; Identity</span></h3>
+        <p class="svc__desc"><span class="i18n-ar">نبني هوية بصرية متكاملة تجعل علامتك تُذكر وتُميّزك عن المنافسين.</span><span class="i18n-en">A complete visual identity that makes your brand memorable and sets you apart.</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ PROCESS ============================================================ -->
+<section class="section process" id="process">
+  <div class="container">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow" data-i18n="process.eyebrow">منهجيتنا</span>
+      <h2 class="h-sec">
+        <span class="i18n-ar">من الفكرة إلى <span class="accent-t">النمو</span></span>
+        <span class="i18n-en">From idea to <span class="accent-t">growth</span></span>
+      </h2>
+      <p class="lead" style="margin-inline:auto;" data-i18n="process.lead">قبل أن نفتح الكاميرا… نفتح عقلنا. عملية واضحة من أربع مراحل توصلك إلى نتائج حقيقية.</p>
+    </div>
+
+    <div class="process__flow">
+      <article class="step" data-reveal data-reveal-delay="1">
+        <span class="step__connector"></span>
+        <span class="step__n">STEP 01</span>
+        <div class="step__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3 class="step__title"><span class="i18n-ar">نبحث ونحلّل</span><span class="i18n-en">Research &amp; Analyze</span></h3>
+        <p class="step__desc"><span class="i18n-ar">نفهم مشروعك، جمهورك، وأهدافك بعمق.</span><span class="i18n-en">We deeply understand your business, audience and goals.</span></p>
+      </article>
+
+      <article class="step" data-reveal data-reveal-delay="2">
+        <span class="step__connector"></span>
+        <span class="step__n">STEP 02</span>
+        <div class="step__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/></svg></div>
+        <h3 class="step__title"><span class="i18n-ar">نخطّط ونضع الاستراتيجية</span><span class="i18n-en">Plan &amp; Strategize</span></h3>
+        <p class="step__desc"><span class="i18n-ar">خطة محتوى وأهداف واضحة قابلة للقياس.</span><span class="i18n-en">A measurable content plan with clear objectives.</span></p>
+      </article>
+
+      <article class="step" data-reveal data-reveal-delay="3">
+        <span class="step__connector"></span>
+        <span class="step__n">STEP 03</span>
+        <div class="step__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20 20 4M14 4h6v6M4 14v6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="step__title"><span class="i18n-ar">نبدع وننفّذ</span><span class="i18n-en">Create &amp; Execute</span></h3>
+        <p class="step__desc"><span class="i18n-ar">محتوى إبداعي وحملات تُطلق باحترافية.</span><span class="i18n-en">Creative content and campaigns launched professionally.</span></p>
+      </article>
+
+      <article class="step" data-reveal data-reveal-delay="4">
+        <span class="step__n">STEP 04</span>
+        <div class="step__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14 8 3-3 3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="step__title"><span class="i18n-ar">نقيس ونحقّق النتائج</span><span class="i18n-en">Measure &amp; Grow</span></h3>
+        <p class="step__desc"><span class="i18n-ar">نراقب، نحسّن، ونضاعف النمو باستمرار.</span><span class="i18n-en">We track, optimize and compound your growth.</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CTA / CONTACT ============================================================ -->
+<section class="section cta" id="contact">
+  <div class="container">
+    <div class="cta__panel" data-reveal>
+      <div class="hero__glow hero__glow--o"></div>
+      <div class="hero__glow hero__glow--t"></div>
+      <h2 class="cta__title">
+        <span class="i18n-ar">جاهز تبني <span class="accent-o">نموًا</span> حقيقيًا؟</span>
+        <span class="i18n-en">Ready to build real <span class="accent-o">growth</span>?</span>
+      </h2>
+      <p class="cta__sub">
+        <span class="i18n-ar">احجز استشارة مجانية، ودعنا نفهم مشروعك ونضع أول خطوة في طريق النمو.</span>
+        <span class="i18n-en">Book a free consultation and let us understand your business and map your first step toward growth.</span>
+      </p>
+      <div class="cta__actions">
+        <a href="https://instagram.com/icreative_eg" target="_blank" rel="noopener" class="btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          <span data-i18n="cta.ig">راسلنا على إنستجرام</span>
+        </a>
+        <a href="https://www.facebook.com/icreativeeg" target="_blank" rel="noopener" class="btn btn--teal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1.3-3 3v2H8v3h3v7h3v-7h2.5l.5-3H14V9Z"/></svg>
+          <span data-i18n="cta.fb">راسلنا على فيسبوك</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#home" class="logo">
+          <span class="logo__mark"><span class="logo__i"></span></span>
+          <span class="logo__text"><span class="logo__name">i<b>CREATIVE</b></span><span class="logo__sub">AGENCY</span></span>
+        </a>
+        <p class="footer__about"><span class="i18n-ar">وكالة نمو رقمية — نبني الاستراتيجية والمحتوى والنتائج التي تنمّي أعمالك.</span><span class="i18n-en">A digital growth agency — we build the strategy, content and results that grow your business.</span></p>
+        <div class="footer__socials">
+          <a href="https://instagram.com/icreative_eg" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg></a>
+          <a href="https://www.facebook.com/icreativeeg" target="_blank" rel="noopener" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1.3-3 3v2H8v3h3v7h3v-7h2.5l.5-3H14V9Z"/></svg></a>
+          <a href="https://www.tiktok.com/@icreative_eg" target="_blank" rel="noopener" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2 1.6 3.4 3.5 3.6V9c-1.4 0-2.6-.4-3.5-1v6.2A5.2 5.2 0 1 1 10 9v2.7a2.5 2.5 0 1 0 3 2.5V3h3Z"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4><span class="i18n-ar">روابط</span><span class="i18n-en">Links</span></h4>
+        <a href="#work"><span class="i18n-ar">أعمالنا</span><span class="i18n-en">Work</span></a>
+        <a href="#portfolio"><span class="i18n-ar">المعرض</span><span class="i18n-en">Portfolio</span></a>
+        <a href="#services"><span class="i18n-ar">خدماتنا</span><span class="i18n-en">Services</span></a>
+        <a href="#process"><span class="i18n-ar">منهجيتنا</span><span class="i18n-en">Process</span></a>
+      </div>
+
+      <div class="footer__col">
+        <h4><span class="i18n-ar">خدمات</span><span class="i18n-en">Services</span></h4>
+        <a href="#services"><span class="i18n-ar">الاستراتيجية</span><span class="i18n-en">Strategy</span></a>
+        <a href="#services"><span class="i18n-ar">المحتوى الإبداعي</span><span class="i18n-en">Creative content</span></a>
+        <a href="#services"><span class="i18n-ar">الحملات الإعلانية</span><span class="i18n-en">Ad campaigns</span></a>
+        <a href="#services"><span class="i18n-ar">الهوية البصرية</span><span class="i18n-en">Branding</span></a>
+      </div>
+
+      <div class="footer__col">
+        <h4><span class="i18n-ar">تواصل</span><span class="i18n-en">Contact</span></h4>
+        <a href="https://instagram.com/icreative_eg" target="_blank" rel="noopener">Instagram · @icreative_eg</a>
+        <a href="https://www.facebook.com/icreativeeg" target="_blank" rel="noopener">Facebook · iCreative</a>
+        <a href="https://www.tiktok.com/@icreative_eg" target="_blank" rel="noopener">TikTok · @icreative_eg</a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© <span id="year">2026</span> iCreative Agency. <span class="i18n-ar">جميع الحقوق محفوظة.</span><span class="i18n-en">All rights reserved.</span></span>
+      <span class="footer__tagline">We don't just create content. <span class="accent-t">We build growth.</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================ SCRIPT ============================================================ -->
+<script>
+(function(){
+  "use strict";
+  var html = document.documentElement;
+
+  /* ---- i18n dictionary (attribute-based text) ---- */
+  var DICT = {
+    ar:{
+      "nav.services":"خدماتنا","nav.process":"منهجيتنا","nav.work":"أعمالنا","nav.portfolio":"المعرض","nav.why":"لماذا نحن","nav.reviews":"آراء العملاء","nav.cta":"تواصل معنا",
+      "hero.badge":"وكالة نمو رقمية متكاملة","hero.cta1":"ابدأ مشروعك","hero.cta2":"شاهد أعمالنا","hero.scroll":"اكتشف",
+      "stats.eyebrow":"أرقام تتحدث","stats.reach":"وصول شهري للعلامات","stats.projects":"مشروع تم إطلاقه","stats.retention":"نسبة رضا العملاء","stats.roi":"متوسط نمو العائد",
+      "services.eyebrow":"ماذا نقدّم","services.lead":"نغطّي رحلتك بالكامل — من فهم مشروعك ووضع الاستراتيجية، إلى الإبداع والتنفيذ وقياس النتائج.",
+      "process.eyebrow":"منهجيتنا","process.lead":"قبل أن نفتح الكاميرا… نفتح عقلنا. عملية واضحة من أربع مراحل توصلك إلى نتائج حقيقية.",
+      "work.eyebrow":"أعمال مختارة","portfolio.eyebrow":"معرض الأعمال","why.eyebrow":"لماذا iCreative","tst.eyebrow":"آراء عملائنا","cta.ig":"راسلنا على إنستجرام","cta.fb":"راسلنا على فيسبوك"
+    },
+    en:{
+      "nav.services":"Services","nav.process":"Process","nav.work":"Work","nav.portfolio":"Gallery","nav.why":"Why us","nav.reviews":"Reviews","nav.cta":"Contact us",
+      "hero.badge":"A full-service digital growth agency","hero.cta1":"Start your project","hero.cta2":"View our work","hero.scroll":"Scroll",
+      "stats.eyebrow":"Numbers that talk","stats.reach":"Monthly brand reach","stats.projects":"Projects launched","stats.retention":"Client satisfaction","stats.roi":"Average ROI growth",
+      "services.eyebrow":"What we do","services.lead":"We cover your whole journey — from understanding your business and setting strategy, to creativity, execution and measuring results.",
+      "process.eyebrow":"Our process","process.lead":"Before we open the camera… we open our minds. A clear four-stage process that gets you real results.",
+      "work.eyebrow":"Selected work","portfolio.eyebrow":"Portfolio","why.eyebrow":"Why iCreative","tst.eyebrow":"Client stories","cta.ig":"DM us on Instagram","cta.fb":"Message us on Facebook"
+    }
+  };
+
+  function applyLang(lang){
+    var isAr = lang === "ar";
+    html.setAttribute("lang", lang);
+    html.setAttribute("dir", isAr ? "rtl" : "ltr");
+    html.classList.toggle("lang-ar", isAr);
+    html.classList.toggle("lang-en", !isAr);
+    // attribute text
+    var map = DICT[lang];
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var k = el.getAttribute("data-i18n");
+      if(map[k]) el.textContent = map[k];
+    });
+    // toggle buttons state
+    document.querySelectorAll(".lang-toggle button").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+    });
+  }
+
+  document.querySelectorAll(".lang-toggle button").forEach(function(b){
+    b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang")); });
+  });
+  applyLang("ar"); // default
+
+  /* ---- Nav scroll state ---- */
+  var nav = document.getElementById("nav");
+  var onScroll = function(){ nav.classList.toggle("scrolled", window.scrollY > 30); };
+  onScroll(); window.addEventListener("scroll", onScroll, {passive:true});
+
+  /* ---- Mobile menu ---- */
+  var burger = document.getElementById("burger");
+  burger.addEventListener("click", function(){
+    var open = document.body.classList.toggle("menu-open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  var navScrim = document.getElementById("navScrim");
+  if (navScrim) navScrim.addEventListener("click", function(){
+    document.body.classList.remove("menu-open");
+    burger.setAttribute("aria-expanded", false);
+  });
+  document.querySelectorAll("#navLinks a").forEach(function(a){
+    a.addEventListener("click", function(){ document.body.classList.remove("menu-open"); });
+  });
+
+  /* ---- Reveal on scroll ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll("[data-reveal]").forEach(function(el){ io.observe(el); });
+
+  /* ---- Count-up numbers ---- */
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute("data-count"));
+    var suffix = el.getAttribute("data-suffix") || "";
+    var isFloat = target % 1 !== 0;
+    var dur = 1600, start = null;
+    function tick(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start)/dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = target * eased;
+      el.textContent = (isFloat ? val.toFixed(1) : Math.round(val)) + suffix;
+      if(p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var countIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ animateCount(e.target); countIO.unobserve(e.target); } });
+  }, {threshold:.5});
+  document.querySelectorAll("[data-count]").forEach(function(el){ countIO.observe(el); });
+
+  /* ============================================================
+     PORTFOLIO — data-driven featured cases + gallery + lightbox + case modal
+     Edit PROJECTS below to add/remove work. Images live in assets/work/.
+     KPIs are illustrative — replace with real client numbers.
+     ============================================================ */
+  var IMGBASE = "assets/work/";
+  function BI(ar,en){ return '<span class="i18n-ar">'+ar+'</span><span class="i18n-en">'+en+'</span>'; }
+
+  var INDUSTRIES = [
+    {k:"all",         ar:"الكل",            en:"All"},
+    {k:"restaurants", ar:"مطاعم وكافيهات",  en:"Restaurants"},
+    {k:"realestate",  ar:"عقارات",          en:"Real Estate"},
+    {k:"furniture",   ar:"أثاث",            en:"Furniture"},
+    {k:"automotive",  ar:"سيارات",          en:"Automotive"},
+    {k:"beauty",      ar:"تجميل وعناية",    en:"Beauty"}
+  ];
+
+  var PROJECTS = [
+    { slug:"bite", ind:"restaurants", featured:true,
+      name:{ar:"بايت", en:"Bite"}, role:{ar:"تصوير طعام · هوية · سوشيال", en:"Food Photography · Branding · Social"},
+      brief:{ar:"تصوير طعام يفتح النفس وهوية جريئة لعلامة برجر.", en:"Crave-worthy food photography and a bold identity for a burger brand."},
+      kpis:[{b:"20+",ar:"طبق",en:"Dishes"},{b:"3.4x",ar:"تفاعل",en:"Engagement"},{b:"+62%",ar:"نية الطلب",en:"Order intent"}],
+      challenge:{ar:"طعام رائع لكن صور باهتة وغير متسقة لا توقف التمرير ولا تعكس الجودة.", en:"Great food, but flat and inconsistent photos that didn't stop the scroll or communicate quality."},
+      approach:{ar:"بنينا لغة بصرية داكنة بإضاءة نيون، وأخرجنا كل طبق فنيًا، وصمّمنا نظام سوشيال يركّز على الشهية والاتساق.", en:"We built a dark, neon-lit visual language, art-directed every dish, and designed a social system around appetite and consistency."},
+      result:{ar:"فيد متناسق وفاخر رفع التفاعل ونية الطلب — طعام يبيع قبل أول قضمة.", en:"A cohesive, premium feed that lifted engagement and order intent — food that sells before the first bite."},
+      images:[
+        {f:"bite-chicken", t:{ar:"برجر دجاج مقرمش", en:"Crispy Chicken Burger"}},
+        {f:"bite-burger",  t:{ar:"برجر لحم كلاسيك", en:"Classic Beef Burger"}},
+        {f:"bite-sub",     t:{ar:"ساندويتش سَب مميّز", en:"Signature Sub"}}
+      ]},
+    { slug:"coco", ind:"restaurants", featured:false,
+      name:{ar:"كوكو كافيه", en:"Coco Café"}, role:{ar:"حملات إبداعية · سوشيال", en:"Creative Campaigns · Social"},
+      brief:{ar:"حملات مرحة عالية الطاقة حوّلت منيو الكافيه إلى لحظات قابلة للمشاركة.", en:"Playful, high-energy campaigns that turned a café menu into shareable moments."},
+      kpis:[{b:"45+",ar:"تصميم",en:"Designs"},{b:"2.8x",ar:"وصول",en:"Reach"},{b:"+40%",ar:"تفاعل",en:"Engagement"}],
+      challenge:{ar:"كافيه بشخصية مرحة لم يكن المحتوى يعكسها.", en:"A café with a fun personality its content wasn't showing."},
+      approach:{ar:"مفاهيم حملات مشرقة وذكية (دجاج بالمظلة، عجائب تُؤكل) مع هوية برتقالية متسقة.", en:"Bright, witty campaign concepts (skydiving chicken, edible 'wonders') with a consistent orange identity."},
+      result:{ar:"فيد يشاركه الناس فعلًا — شخصية تنتقل.", en:"A feed people actually share — personality that travels."},
+      images:[
+        {f:"coco-parachute", t:{ar:'حملة «منطقة النكهة»', en:'"Zone of Flavour" Campaign'}},
+        {f:"coco-wonder",    t:{ar:'حملة «عجيبة الدنيا»', en:'"New Wonder" Campaign'}},
+        {f:"coco-bubbletea", t:{ar:"ببل تي", en:"Bubble Tea"}}
+      ]},
+    { slug:"demas", ind:"restaurants", featured:false,
+      name:{ar:"مطعم ديماس", en:"Demas"}, role:{ar:"تصوير طعام · هوية توصيل", en:"Food Photography · Delivery Branding"},
+      brief:{ar:"تصوير يفتح الشهية وهوية توصيل لمطعم محلي مزدحم.", en:"Appetite-first food shots and delivery branding for a busy local restaurant."},
+      kpis:[{b:"15+",ar:"صورة",en:"Shots"},{b:"2.1x",ar:"تفاعل",en:"Engagement"}],
+      approach:{ar:"تصوير طعام يفتح الشهية ورسائل توصيل واضحة وسريعة.", en:"Appetite-driven food photography and clear, fast delivery messaging."},
+      result:{ar:"علامة تفتح النفس وتجعل الطلب سهلًا.", en:"A hungry, trustworthy brand that makes ordering effortless."},
+      images:[
+        {f:"demas-chicken",  t:{ar:"ساندويتش دجاج", en:"Chicken Stack"}},
+        {f:"demas-broasted", t:{ar:"بروست ديماس", en:"Broasted Platter"}}
+      ]},
+    { slug:"elite", ind:"realestate", featured:true,
+      name:{ar:"إيليت للتطوير", en:"Elite Development"}, role:{ar:"حملات · إعلانات مفاهيمية", en:"Brand Campaigns · Concept Ads"},
+      brief:{ar:"حملات عقارية بمفاهيم إبداعية تبيع المكانة والثقة والاستثمار الذكي.", en:"Concept-driven real-estate campaigns that sell status, trust, and smart investment."},
+      kpis:[{b:"5",ar:"حملات",en:"Campaigns"},{b:"12+",ar:"تصميم",en:"Creatives"},{b:"2029",ar:"إطلاق",en:"Launch"}],
+      challenge:{ar:"في سوق مزدحم، بدت مشاريع إيليت كغيرها — مواصفات بلا مشاعر.", en:"In a crowded market, Elite's projects looked like everyone else's — features, not feelings."},
+      approach:{ar:"قدنا الحملة بمفاهيم جريئة — الشطرنج، المكانة، الاستثمار — مع رندرات ثلاثية الأبعاد سينمائية ونصوص عربية قوية.", en:"We led with bold concepts — chess, status, investment — pairing cinematic 3D renders with sharp Arabic copy."},
+      result:{ar:"حضور مميّز يضع إيليت كمطوّر فاخر يفكّر للمستقبل.", en:"A distinctive brand presence that positions Elite as a premium, forward-thinking developer."},
+      images:[
+        {f:"elite-chess",      t:{ar:"كل مبنى خطوة محسوبة", en:"Every Building a Calculated Move"}},
+        {f:"elite-arch",       t:{ar:"اختيارك يعكس مكانتك", en:"Your Choice Reflects Your Status"}},
+        {f:"elite-investment", t:{ar:"العقار يزيد رأس المال", en:"Real Estate Grows Capital"}},
+        {f:"elite-lowprice",   t:{ar:"مش كل سعر قليل صفقة", en:"Not Every Low Price Is a Deal"}},
+        {f:"elezz-render",     t:{ar:"مشروع العز — في قلب الفرصة", en:"El Ezz — At the Heart of Opportunity"}}
+      ]},
+    { slug:"autoway", ind:"automotive", featured:true,
+      name:{ar:"أوتو واي", en:"Auto Way"}, role:{ar:"إعلانات سيارات · تصميم عروض", en:"Automotive Ads · Offer Design"},
+      brief:{ar:"إعلانات عروض سيارات توقف التمرير وتصاميم إطلاق لمعرض متعدد العلامات.", en:"Scroll-stopping automotive offers and launch creatives for a multi-brand dealership."},
+      kpis:[{b:"8+",ar:"علامات",en:"Brands"},{b:"20+",ar:"إعلان",en:"Ad designs"},{b:"3.1x",ar:"وصول",en:"Reach"}],
+      challenge:{ar:"عشرات الموديلات والعروض بلا صوت إبداعي موحّد.", en:"Dozens of models and offers with no consistent creative voice."},
+      approach:{ar:"نظام إعلاني جريء عالي التباين — سيارات بطلة، خلفيات سينمائية (أهرامات، ملاعب)، وتايبوجرافي عروض واضح تمامًا.", en:"A bold, high-contrast ad system — hero cars, cinematic backdrops (pyramids, stadiums), and crystal-clear offer typography."},
+      result:{ar:"عروض توقف التمرير وتجعل التقسيط يبدو سهلًا.", en:"Offers that stop the scroll and make financing feel effortless."},
+      images:[
+        {f:"autoway-cupra",    t:{ar:"كوبرا فورمنتور", en:"CUPRA Formentor"}},
+        {f:"autoway-kaiyi",    t:{ar:"كايي X7", en:"KAIYI X7"}},
+        {f:"autoway-worldcup", t:{ar:"جاهزون لكأس العالم 2026", en:"Ready for World Cup 2026"}},
+        {f:"autoway-soueast",  t:{ar:"سوايست S05", en:"SOUEAST S05"}}
+      ]},
+    { slug:"elevate", ind:"furniture", featured:false,
+      name:{ar:"إيليفيت جاليري", en:"Elevate Gallery"}, role:{ar:"إعلانات منتجات · هوية فاخرة", en:"Product Ads · Luxury Identity"},
+      brief:{ar:"نظام بصري فاخر يجعل كل قطعة أثاث تبدو كتعبير عن الذوق.", en:"A luxury visual system that makes every furniture piece feel like a statement."},
+      kpis:[{b:"3",ar:"مجموعات",en:"Collections"},{b:"12+",ar:"تصميم",en:"Creatives"}],
+      approach:{ar:"نظام فاخر داكن بلمسات ذهبية وإخراج منتجات تحريري.", en:"A dark, gold-accented luxury system with editorial product staging."},
+      result:{ar:"أثاث يُصوَّر كأنه في مجلة تصميم.", en:"Furniture that photographs like a design magazine."},
+      images:[
+        {f:"elevate-outdoor", t:{ar:"طقم خارجي فايبرجلاس", en:"Fiberglass Outdoor Set"}},
+        {f:"elevate-bedroom", t:{ar:"غرفة نوم فاخرة", en:"Luxury Bedroom Set"}},
+        {f:"elevate-dining",  t:{ar:"سفرة جوز حديثة", en:"Modern Walnut Dining"}}
+      ]},
+    { slug:"cosmo", ind:"beauty", featured:false,
+      name:{ar:"كوزمو", en:"Cosmo"}, role:{ar:"تصوير منتجات · حملة", en:"Product Photography · Campaign"},
+      brief:{ar:"تصوير منتجات نابض وحملة تركّز على الحواس لعلامة تجميل.", en:"Vibrant product photography and a scent-forward campaign for a beauty line."},
+      kpis:[{b:"2",ar:"حملات",en:"Campaigns"},{b:"10+",ar:"صورة",en:"Shots"}],
+      approach:{ar:"تصوير منتجات وموديل جريء ومشبع بالألوان حول خط دراجون فروت.", en:"Bold, colour-saturated product and model photography around the Dragon Fruit line."},
+      result:{ar:"رائحة وملمس تكاد تشعر بهما عبر الشاشة.", en:"A scent and texture you can almost feel through the screen."},
+      images:[
+        {f:"cosmo-model", t:{ar:"حملة دراجون فروت", en:"Dragon Fruit Campaign"}},
+        {f:"cosmo-scrub", t:{ar:"سكراب دراجون فروت", en:"Dragon Fruit Scrub"}}
+      ]},
+    { slug:"loyal", ind:"beauty", featured:false,
+      name:{ar:"لويال", en:"Loyal"}, role:{ar:"تصوير منتجات", en:"Product Photography"},
+      brief:{ar:"تصوير منعش يبرز الفاكهة لمجموعة بخّاخ الجسم.", en:"Fresh, fruit-forward product photography for a body-mist range."},
+      kpis:[{b:"8+",ar:"منتج",en:"Products"}],
+      approach:{ar:"تصوير منعش بلمسة رذاذ يبرز الفاكهة.", en:"Fresh, fruit-forward splash photography."},
+      result:{ar:"صور منتج منعشة بقدر الرائحة.", en:"Product shots as refreshing as the scent."},
+      images:[
+        {f:"loyal-candy", t:{ar:"بخّاخ الجسم", en:"Body Mist"}}
+      ]},
+    { slug:"eman", ind:"beauty", featured:false,
+      name:{ar:"إيمان للعطور", en:"Eman Perfume"}, role:{ar:"إخراج فني لعطر", en:"Perfume Art Direction"},
+      brief:{ar:"إخراج فني رومانسي مستوحى من الحدائق لعطر فاخر.", en:"Romantic, garden-inspired art direction for a premium perfume."},
+      kpis:[{b:"1",ar:"إطلاق عطر",en:"Perfume launch"}],
+      approach:{ar:"إخراج فني رومانسي مستوحى من الحدائق بإضاءة ناعمة وأزهار.", en:"Romantic, garden-inspired art direction with soft light and florals."},
+      result:{ar:"عطر فاخر يشبه باقة ورد.", en:"A premium perfume that feels like a bouquet."},
+      images:[
+        {f:"eman-perfume", t:{ar:"عطر إيمان", en:"Eman Perfume"}}
+      ]}
+  ];
+
+  var BYSLUG = {}; PROJECTS.forEach(function(p){ BYSLUG[p.slug]=p; });
+  function indLabel(k){ for(var i=0;i<INDUSTRIES.length;i++){ if(INDUSTRIES[i].k===k) return INDUSTRIES[i]; } return {ar:k,en:k}; }
+  var arrowSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var zoomSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  /* ---- Render featured case cards ---- */
+  var casesGrid = document.getElementById("casesGrid");
+  /* Dedicated reveal observer for case cards (mirrors the gallery's pattern below) —
+     defined here because it must exist before these cards are created and observed. */
+  var caseObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); caseObserver.unobserve(e.target); } });
+  }, {threshold:.15});
+  /* Real client marks already used in the Selected Clients wall — reused here (not new
+     assets) as a small proof badge so each featured card reads as a named, real business. */
+  var CASE_LOGOS = {bite:"bite.png",coco:"coco.png",demas:"demas.png",elite:"elite.png",autoway:"autoway.png",elevate:"elevate.png"};
+  /* Each hero creative is a real ad with its own baked-in headline — a single crop point
+     can't serve all of them, so every featured slug gets the vertical focal point that
+     keeps its own headline/logo readable instead of sliced off by the card's aspect ratio. */
+  var CASE_FOCUS = {bite:"32%", elite:"18%", autoway:"90%"};
+  PROJECTS.filter(function(p){return p.featured;}).forEach(function(p, idx){
+    var il = indLabel(p.ind);
+    var kp = p.kpis.slice(0,3).map(function(k){ return '<div class="case__kpi"><b>'+k.b+'</b><span>'+BI(k.ar,k.en)+'</span></div>'; }).join("");
+    var story = p.challenge || p.brief; /* real copy already written for the case modal — never invented here */
+    var logo = CASE_LOGOS[p.slug] ? '<span class="case__logo"><img src="'+ "assets/logos/" + CASE_LOGOS[p.slug] +'" alt="" loading="lazy"></span>' : "";
+    var el = document.createElement("article");
+    el.className = "case" + (idx === 0 ? " case--feature" : "");
+    el.setAttribute("data-slug", p.slug);
+    el.innerHTML =
+      '<div class="case__media"><img loading="lazy" style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.jpg" alt="'+p.name.en+'"></div>'+
+      '<div class="case__grad"></div>'+
+      '<span class="case__count">'+p.images.length+' '+BI("صور","photos")+'</span>'+
+      '<div class="case__body">'+
+        '<div class="case__top"><span class="case__ind">'+BI(il.ar,il.en)+'</span>'+logo+'</div>'+
+        '<h3 class="case__name">'+BI(p.name.ar,p.name.en)+'</h3>'+
+        '<p class="case__role">'+BI(p.role.ar,p.role.en)+'</p>'+
+        '<p class="case__challenge">'+BI(story.ar,story.en)+'</p>'+
+        '<div class="case__kpis">'+kp+'</div>'+
+        '<span class="case__cta">'+BI("اقرأ القصة كاملة","Read the full case study")+' '+arrowSvg+'</span>'+
+      '</div>';
+    el.addEventListener("click", function(){ openCase(p.slug); });
+    casesGrid.appendChild(el);
+    caseObserver.observe(el);
+  });
+
+  /* ---- Render gallery filters ---- */
+  var galFilters = document.getElementById("galleryFilters");
+  INDUSTRIES.forEach(function(ind,i){
+    var b=document.createElement("button");
+    if(i===0) b.className="active";
+    b.setAttribute("data-filter", ind.k);
+    b.innerHTML = BI(ind.ar, ind.en);
+    galFilters.appendChild(b);
+  });
+
+  /* ---- Render gallery items ---- */
+  var galGrid = document.getElementById("galleryGrid");
+  var galObserver = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); galObserver.unobserve(e.target);} });
+  }, {threshold:.08});
+  PROJECTS.forEach(function(p){
+    p.images.forEach(function(img, idx){
+      var a=document.createElement("div");
+      a.className="g-item";
+      a.setAttribute("data-ind", p.ind);
+      a.innerHTML =
+        '<img loading="lazy" src="'+IMGBASE+img.f+'.jpg" alt="'+p.name.en+' — '+img.t.en+'">'+
+        '<span class="g-item__zoom">'+zoomSvg+'</span>'+
+        '<div class="g-item__ov">'+
+          '<span class="g-item__client">'+BI(p.name.ar,p.name.en)+'</span>'+
+          '<span class="g-item__proj">'+BI(img.t.ar,img.t.en)+'</span>'+
+        '</div>';
+      a.addEventListener("click", function(){ openLB(p.slug, idx); });
+      galGrid.appendChild(a);
+      galObserver.observe(a);
+    });
+  });
+
+  /* ---- Gallery filter behaviour ---- */
+  galFilters.addEventListener("click", function(e){
+    var btn=e.target.closest("button"); if(!btn) return;
+    galFilters.querySelectorAll("button").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    var f=btn.getAttribute("data-filter");
+    galGrid.querySelectorAll(".g-item").forEach(function(it){
+      it.style.display = (f==="all"||it.getAttribute("data-ind")===f) ? "" : "none";
+    });
+  });
+
+  /* ---- Lightbox ---- */
+  var LB={group:[],i:0,slug:null};
+  var lb=document.getElementById("lightbox"),
+      lbImg=document.getElementById("lbImg"),
+      lbClient=document.getElementById("lbClient"),
+      lbProject=document.getElementById("lbProject"),
+      lbCount=document.getElementById("lbCount");
+  function renderLB(){
+    var p=BYSLUG[LB.slug], img=p.images[LB.i];
+    lbImg.src=IMGBASE+img.f+".jpg";
+    lbClient.innerHTML=BI(p.name.ar,p.name.en);
+    lbProject.innerHTML=BI(img.t.ar,img.t.en);
+    lbCount.textContent=(LB.i+1)+" / "+p.images.length;
+  }
+  function openLB(slug,i){ LB.slug=slug; LB.i=i; renderLB(); lb.classList.add("open"); document.body.classList.add("modal-open"); }
+  function closeLB(){ lb.classList.remove("open"); if(!caseModal.classList.contains("open")) document.body.classList.remove("modal-open"); }
+  function lbStep(d){ var n=BYSLUG[LB.slug].images.length; LB.i=(LB.i+d+n)%n; renderLB(); }
+  document.getElementById("lbClose").addEventListener("click", closeLB);
+  document.getElementById("lbPrev").addEventListener("click", function(){ lbStep(-1); });
+  document.getElementById("lbNext").addEventListener("click", function(){ lbStep(1); });
+  lb.addEventListener("click", function(e){ if(e.target===lb) closeLB(); });
+
+  /* ---- Case study modal ---- */
+  var caseModal=document.getElementById("caseModal"), cmScroll=document.getElementById("cmScroll");
+  function block(label_ar,label_en,val){ if(!val) return ""; return '<div class="cm-block"><h4>'+BI(label_ar,label_en)+'</h4><p>'+BI(val.ar,val.en)+'</p></div>'; }
+  function openCase(slug){
+    var p=BYSLUG[slug], il=indLabel(p.ind);
+    var kp=p.kpis.map(function(k){ return '<div class="cm-kpi"><b>'+k.b+'</b><span>'+BI(k.ar,k.en)+'</span></div>'; }).join("");
+    var gal=p.images.map(function(img,idx){ return '<img loading="lazy" src="'+IMGBASE+img.f+'.jpg" alt="'+img.t.en+'" data-i="'+idx+'">'; }).join("");
+    cmScroll.innerHTML =
+      '<div class="cm-hero"><img style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.jpg" alt="'+p.name.en+'"><div class="cm-hero__grad"></div>'+
+        '<div class="cm-hero__body"><span class="cm-hero__ind">'+BI(il.ar,il.en)+'</span>'+
+        '<h3 class="cm-hero__name">'+BI(p.name.ar,p.name.en)+'</h3>'+
+        '<p class="cm-hero__role">'+BI(p.role.ar,p.role.en)+'</p></div></div>'+
+      '<div class="cm-content">'+
+        '<div class="cm-kpis">'+kp+'</div>'+
+        block("نبذة","Overview",p.brief)+
+        block("التحدّي","The challenge",p.challenge)+
+        block("منهجيتنا","Our approach",p.approach)+
+        block("النتيجة","The result",p.result)+
+        '<div class="cm-block"><h4>'+BI("من المشروع","From the project")+'</h4></div>'+
+        '<div class="cm-gallery">'+gal+'</div>'+
+      '</div>';
+    cmScroll.querySelectorAll(".cm-gallery img").forEach(function(im){
+      im.addEventListener("click", function(){ openLB(slug, parseInt(im.getAttribute("data-i"),10)); });
+    });
+    cmScroll.scrollTop=0;
+    caseModal.classList.add("open"); document.body.classList.add("modal-open");
+  }
+  function closeCase(){ caseModal.classList.remove("open"); if(!lb.classList.contains("open")) document.body.classList.remove("modal-open"); }
+  document.getElementById("cmClose").addEventListener("click", closeCase);
+  caseModal.addEventListener("click", function(e){ if(e.target===caseModal) closeCase(); });
+
+  /* ---- Keyboard ---- */
+  document.addEventListener("keydown", function(e){
+    if(lb.classList.contains("open")){
+      if(e.key==="Escape") closeLB();
+      else if(e.key==="ArrowRight") lbStep(html.getAttribute("dir")==="rtl"?-1:1);
+      else if(e.key==="ArrowLeft") lbStep(html.getAttribute("dir")==="rtl"?1:-1);
+    } else if(caseModal.classList.contains("open") && e.key==="Escape"){ closeCase(); }
+  });
+
+  /* ---- Duplicate marquee for seamless loop ---- */
+  var track = document.getElementById("marquee");
+  if(track){ track.innerHTML += track.innerHTML; }
+
+  /* ---- Year ---- */
+  document.getElementById("year").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
