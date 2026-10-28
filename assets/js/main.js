@@ -278,9 +278,8 @@
   var arrowSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var zoomSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
-  /* ---- Scene 03 (Phase 2A): the first existing project becomes the cinematic showcase ----
-     It is simply the first project in the existing PROJECTS order. Only its real copy and real images are used;
-     the "illustrative" KPI figures and outcome paragraphs (docs/PHASE0-REPORT.md §9) are deliberately not shown. */
+  /* DEMAS (PROJECTS[0]) keeps no case card: its card data carries illustrative KPI figures (docs/PHASE0-REPORT.md §9)
+     that were never shown. It stays a full project in the portfolio gallery, and its images open Scene 03's Photo Gallery. */
   var SHOW = PROJECTS[0];
 
   /* ---- Render featured case cards ---- */
@@ -297,7 +296,7 @@
      can't serve all of them, so every featured slug gets the vertical focal point that
      keeps its own headline/logo readable instead of sliced off by the card's aspect ratio. */
   var CASE_FOCUS = {bite:"32%", elite:"18%", autoway:"90%"};
-  PROJECTS.filter(function(p){return p.featured && p !== SHOW;}).forEach(function(p, idx){   /* TEMPORARY: the showcased project is not repeated as a card */
+  PROJECTS.filter(function(p){return p.featured && p !== SHOW;}).forEach(function(p, idx){
     var il = indLabel(p.ind);
     var kp = p.kpis.slice(0,3).map(function(k){ return '<div class="case__kpi"><b>'+k.b+'</b><span>'+BI(k.ar,k.en)+'</span></div>'; }).join("");
     var story = p.challenge || p.brief; /* real copy already written for the case modal — never invented here */
@@ -322,33 +321,48 @@
     caseObserver.observe(el);
   });
 
-  /* ---- Showcase gallery: browse the showcased project's own images inside the same frame ----
-     The frame box keeps the first image's proportions (it is the plane the 3D journey projects); every image is
-     shown whole (contain) and, when its proportions differ, over a blurred, darkened copy of itself. */
-  function scSlide(im, first){
-    var ar = (im.w||1280)/(im.h||1280), h0 = SHOW.images[0], far = (h0.w||1280)/(h0.h||1280);
+  /* ---- Scene 03: the cinematic Photo Gallery ----
+     Every genuine portfolio image of every project, interleaved one client at a time (in the existing PROJECTS
+     order) so each step moves to a different client. It opens on the first project's hero, whose proportions set the
+     frame box — the plane the 3D journey projects. Every image is shown whole (contain) and, when its proportions
+     differ, over a blurred, darkened copy of itself. */
+  var GALLERY = (function(){
+    var out = [], seen = {}, longest = Math.max.apply(null, PROJECTS.map(function(p){ return p.images.length; }));
+    for (var k = 0; k < longest; k++) PROJECTS.forEach(function(p){
+      var im = p.images[k];
+      if (im && !seen[im.f]) { seen[im.f] = 1; out.push({ im: im, p: p }); }   // never the same image twice
+    });
+    return out;
+  })();
+  function scSlide(it, first){
+    var im = it.im, ar = (im.w||1280)/(im.h||1280), h0 = GALLERY[0].im, far = (h0.w||1280)/(h0.h||1280);
     var src = IMGBASE+im.f+'.jpg', lazy = first ? ' loading="lazy"' : '';
     return '<div class="showcase__slide">'+
       (Math.abs(ar/far - 1) > 0.03 ? '<img class="showcase__fill" src="'+src+'" alt=""'+lazy+' decoding="async">' : '')+
-      '<img src="'+src+'" width="'+(im.w||1280)+'" height="'+(im.h||1280)+'" alt="'+SHOW.name.en+' — '+im.t.en+'"'+lazy+' decoding="async"></div>';
+      '<img src="'+src+'" width="'+(im.w||1280)+'" height="'+(im.h||1280)+'" alt="'+it.p.name.en+' — '+im.t.en+'"'+lazy+' decoding="async"></div>';
   }
-  function scCaption(i){ var im = SHOW.images[i], n = SHOW.images.length;
-    return BI(im.t.ar+' — '+(i+1)+' من '+n, im.t.en+' — '+(i+1)+' of '+n); }
-  function initShowcaseGallery(frame){
-    var view = frame.querySelector(".showcase__view"), cap = frame.querySelector("figcaption"), n = SHOW.images.length, idx = 0, token = 0;
+  function pad2(n){ return (n < 10 ? "0" : "") + n; }
+  function scCount(i){ return pad2(i+1)+' / '+pad2(GALLERY.length); }
+  function scCaption(i){ var it = GALLERY[i], n = GALLERY.length;
+    return BI(it.p.name.ar+' — '+it.im.t.ar+' — '+(i+1)+' من '+n, it.p.name.en+' — '+it.im.t.en+' — '+(i+1)+' of '+n); }
+  function initShowcaseGallery(box){
+    var frame = box.querySelector(".showcase__frame"), view = frame.querySelector(".showcase__view"), cap = frame.querySelector("figcaption"),
+      num = box.querySelector(".showcase__num"), client = box.querySelector(".showcase__ind"), n = GALLERY.length, idx = 0, token = 0;
     var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var rtl = function(){ return document.documentElement.dir === "rtl"; };
-    function preload(i){ var im = new Image(); im.decoding = "async"; im.src = IMGBASE+SHOW.images[((i%n)+n)%n].f+'.jpg'; }
+    function preload(i){ var im = new Image(); im.decoding = "async"; im.src = IMGBASE+GALLERY[((i%n)+n)%n].im.f+'.jpg'; }
     function go(step){
       idx = (idx + step + n) % n;
-      var t = ++token, wrap = document.createElement("div");
-      wrap.innerHTML = scSlide(SHOW.images[idx], false);
+      var it = GALLERY[idx], t = ++token, wrap = document.createElement("div");
+      wrap.innerHTML = scSlide(it, false);
       var slide = wrap.firstChild, img = slide.lastChild;
       slide.classList.add("is-entering");
       /* the new image drifts in a few pixels from the side it comes from, in the reading direction */
       slide.style.setProperty("--from", (step > 0 ? 1 : -1) * (rtl() ? -1 : 1) * 14 + "px");
       cap.innerHTML = scCaption(idx);
-      frame.setAttribute("data-index", idx);
+      num.textContent = scCount(idx);
+      client.innerHTML = BI(it.p.name.ar, it.p.name.en);
+      frame.setAttribute("data-index", idx); box.setAttribute("data-client", it.p.slug);
       (img.decode ? img.decode() : Promise.resolve()).catch(function(){}).then(function(){
         if (t !== token) return;                          // a newer step won: never stack two arrivals
         var old = Array.prototype.slice.call(view.children);
@@ -381,74 +395,23 @@
     frame.addEventListener("focusin", warm, { once: true });
   }
 
-  var showBox = document.getElementById("showcaseProject"), pd = document.getElementById("projectDetail"), pdScroll = document.getElementById("pdScroll");
-  if (showBox && SHOW) {
-    var sil = indLabel(SHOW.ind), hero = SHOW.images[0];
-    showBox.setAttribute("data-slug", SHOW.slug);
+  var showBox = document.getElementById("showcaseProject");
+  if (showBox && GALLERY.length) {
+    var first = GALLERY[0], hero = first.im, many = GALLERY.length > 1;
+    showBox.setAttribute("data-client", first.p.slug);
     showBox.innerHTML =
       '<div class="showcase__info">'+
-        '<div class="showcase__meta"><span class="showcase__num">01</span><span class="showcase__ind">'+BI(sil.ar,sil.en)+'</span></div>'+
-        (CASE_LOGOS[SHOW.slug] ? '<img class="showcase__logo" src="'+LOGOBASE+CASE_LOGOS[SHOW.slug]+'" alt="'+SHOW.name.en+'" loading="lazy" decoding="async">' : '')+
-        '<h3 class="showcase__name">'+BI(SHOW.name.ar,SHOW.name.en)+'</h3>'+
-        '<p class="showcase__role">'+BI(SHOW.role.ar,SHOW.role.en)+'</p>'+
-        '<p class="showcase__brief">'+BI(SHOW.brief.ar,SHOW.brief.en)+'</p>'+
-        '<button class="showcase__explore" type="button" aria-haspopup="dialog" aria-controls="projectDetail">'+BI("استكشف المشروع","Explore the project")+' '+arrowSvg+'</button>'+
+        '<div class="showcase__meta"><span class="showcase__num">'+scCount(0)+'</span><span class="showcase__ind">'+BI(first.p.name.ar,first.p.name.en)+'</span></div>'+
+        '<h3 class="showcase__name" id="galleryTitle">'+BI("معرض الصور","Photo Gallery")+'</h3>'+
+        '<p class="showcase__role">'+BI("بعض من أعمالنا","Selected Works")+'</p>'+
       '</div>'+
-      '<figure class="showcase__frame" style="--ar:'+((hero.w||1280)/(hero.h||1280)).toFixed(4)+'"'+(SHOW.images.length > 1 ? ' tabindex="0" aria-label="'+SHOW.name.en+'"' : '')+'>'+
-        '<div class="showcase__view">'+scSlide(hero, true)+'</div>'+
-        (SHOW.images.length > 1 ?
+      '<figure class="showcase__frame" style="--ar:'+((hero.w||1280)/(hero.h||1280)).toFixed(4)+'"'+(many ? ' tabindex="0" aria-labelledby="galleryTitle"' : '')+'>'+
+        '<div class="showcase__view">'+scSlide(first, true)+'</div>'+
+        (many ?
           '<button class="showcase__nav showcase__nav--prev" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only">'+BI("الصورة السابقة","Previous image")+'</span></button>'+
           '<button class="showcase__nav showcase__nav--next" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only">'+BI("الصورة التالية","Next image")+'</span></button>' : '')+
         '<figcaption class="sr-only" aria-live="polite">'+scCaption(0)+'</figcaption></figure>';
-    var exploreBtn = showBox.querySelector(".showcase__explore");
-    if (SHOW.images.length > 1) initShowcaseGallery(showBox.querySelector(".showcase__frame"));
-
-    /* ---- Project details: genuine supporting images + factual copy, in a focused dialog ---- */
-    var pdSavedY = 0, pdRendered = false;
-    function pdBlock(ar,en,val){ return val ? '<div class="pd-block"><h3>'+BI(ar,en)+'</h3><p>'+BI(val.ar,val.en)+'</p></div>' : ""; }
-    function renderPD(){
-      pdScroll.innerHTML =
-        '<button class="pdetail__close" type="button"><span aria-hidden="true">&times;</span><span class="sr-only">'+BI("إغلاق","Close")+'</span></button>'+
-        '<header class="pd-head">'+
-          '<span class="pd-ind">'+BI(sil.ar,sil.en)+'</span>'+
-          '<h2 class="pd-name" id="pdName">'+BI(SHOW.name.ar,SHOW.name.en)+'</h2>'+
-          '<p class="pd-role">'+BI(SHOW.role.ar,SHOW.role.en)+'</p>'+
-        '</header>'+
-        '<div class="pd-body">'+
-          '<div class="pd-text">'+pdBlock("نبذة","Overview",SHOW.brief)+pdBlock("التحدّي","The challenge",SHOW.challenge)+pdBlock("منهجيتنا","Our approach",SHOW.approach)+'</div>'+
-          '<div class="pd-media">'+SHOW.images.map(function(im){
-            return '<figure><img src="'+IMGBASE+im.f+'.jpg" width="'+(im.w||1280)+'" height="'+(im.h||1280)+'" loading="lazy" decoding="async" alt="'+SHOW.name.en+' — '+im.t.en+'"><figcaption>'+BI(im.t.ar,im.t.en)+'</figcaption></figure>'; }).join("")+'</div>'+
-        '</div>'+
-        '<footer class="pd-foot"><button class="pd-back" type="button">'+BI("العودة إلى الرحلة","Back to the journey")+'</button></footer>';
-      pdScroll.querySelector(".pdetail__close").addEventListener("click", closePD);
-      pdScroll.querySelector(".pd-back").addEventListener("click", closePD);
-    }
-    function pdFocusables(){ return Array.prototype.filter.call(pd.querySelectorAll("button, a[href], [tabindex]:not([tabindex='-1'])"), function(el){ return el.offsetParent !== null; }); }
-    function openPD(){
-      if (!pdRendered) { renderPD(); pdRendered = true; }
-      pdSavedY = window.scrollY;
-      pd.hidden = false; html.classList.add("pd-open");
-      pdScroll.scrollTop = 0;
-      requestAnimationFrame(function(){ pd.classList.add("is-open"); pd.querySelector(".pdetail__close").focus({ preventScroll: true }); });
-    }
-    function closePD(){
-      if (pd.hidden) return;
-      pd.classList.remove("is-open"); html.classList.remove("pd-open");
-      pd.hidden = true;
-      /* the journey is a pure function of the scroll position: restoring it restores the camera exactly */
-      if (Math.abs(window.scrollY - pdSavedY) > 1) window.scrollTo({ top: pdSavedY, behavior: "instant" });
-      exploreBtn.focus({ preventScroll: true });
-    }
-    exploreBtn.addEventListener("click", openPD);
-    pd.addEventListener("click", function(e){ if (e.target === pd) closePD(); });
-    pd.addEventListener("keydown", function(e){
-      if (e.key === "Escape") { e.preventDefault(); closePD(); return; }
-      if (e.key !== "Tab") return;
-      var f = pdFocusables(); if (!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    });
+    if (many) initShowcaseGallery(showBox);
   }
 
   /* ---- Render gallery filters ---- */
