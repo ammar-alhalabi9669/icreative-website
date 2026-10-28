@@ -1,0 +1,149 @@
+/* =====================================================================
+   3D HERO (Milestone A) — layout, copy, fallbacks
+   The scene itself lives in assets/js/hero3d.min.js (src/hero3d/main.js).
+   ===================================================================== */
+.h3d { position: relative; height: 100vh; height: 100svh; --h3d-exit: 0; }
+.h3d__sticky { position: relative; height: 100%; overflow: hidden; }
+
+/* The cosmos layer: fixed behind the hero AND the opening of the first chapter, so the journey
+   continues under it; it dissolves into charcoal (--cosmos-fade) and then stops rendering. */
+.h3d__viewport { position: fixed; top: 0; left: 0; right: 0; z-index: 0; pointer-events: none;
+  /* stable height: the large viewport, so Safari's toolbar show/hide never resizes (and clears) the canvas */
+  height: 100vh; height: 100lvh;
+  /* static cosmic gradient underneath the canvas: never a black screen, even before the 3D has loaded */
+  background:
+    radial-gradient(55% 40% at 18% 22%, rgba(110, 52, 18, .28), transparent 70%),
+    radial-gradient(60% 45% at 84% 78%, rgba(14, 70, 78, .30), transparent 70%),
+    radial-gradient(80% 60% at 50% 42%, #0B0E14 0%, #05070A 75%);
+  opacity: var(--cosmos-fade, 1); }
+html.motion-reduce .h3d__viewport { position: absolute; height: 100vh; height: 100svh; }   /* no journey: scrolls with the hero */
+html:not(.js) .h3d__viewport, html.no-webgl .h3d__viewport { display: none; }
+/* all content above the cosmos layer */
+.h3d ~ section, .h3d ~ footer { position: relative; z-index: 1; }
+.h3d__sticky > * { z-index: 1; }
+
+/* stage: full-bleed canvas; the logo itself is the interactive target */
+.h3d__stage { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; display: block; padding: 0; border: 0;
+  background: transparent; cursor: default; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+.h3d__stage:focus-visible { outline: 2px solid var(--orange); outline-offset: -10px; }
+.h3d__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .8s ease; }
+html.h3d-live .h3d__canvas { opacity: 1; }
+
+/* Fallback logo: only without WebGL / JS */
+.h3d__fallback { position: absolute; left: 50%; top: 36%; width: min(64vw, 980px); height: auto; transform: translate(-50%, -50%); display: none; }
+html:not(.js) .h3d__fallback, html.no-webgl .h3d__fallback { display: block; }
+html:not(.js) .h3d__canvas, html.no-webgl .h3d__canvas { display: none; }
+html:not(.js) .h3d__sticky, html.no-webgl .h3d__sticky {
+  background: radial-gradient(70% 55% at 50% 30%, #1A1C22 0%, #0B0C0F 70%); }
+
+/* ---------- the cosmos continues behind the whole site (html.cosmos-site is set by the 3D scene when it runs) ----------
+   Section backgrounds become transparent; a light scrim keeps text readable. Content blocks (cards, panels, images,
+   the client logo wall) keep their own grounds. Reduced motion / no WebGL keep the original solid sections. */
+html.js.motion-full.has-webgl .work-more { background: transparent; padding-top: clamp(3rem, 8vh, 6rem); }
+html.cosmos-site body { background: var(--ink); }
+html.cosmos-site .clients, html.cosmos-site .section--cream, html.cosmos-site .statement, html.cosmos-site .process,
+html.cosmos-site .footer { background: transparent; }
+html.cosmos-site .clients, html.cosmos-site .portfolio, html.cosmos-site #stats, html.cosmos-site .statement, html.cosmos-site .section--cream,
+html.cosmos-site .process, html.cosmos-site .cta { background: linear-gradient(to bottom, rgba(14,15,18,0), rgba(14,15,18,.42) 18%, rgba(14,15,18,.42) 82%, rgba(14,15,18,0)); }
+html.cosmos-site .footer { background: linear-gradient(to bottom, rgba(14,15,18,.35), rgba(14,15,18,.75)); }
+html.cosmos-site .h3d ~ .clients::before, html.cosmos-site .h3d ~ .clients::after { display: none; }   /* cream dawn/dusk fades no longer needed */
+/* former light sections: same content, text in the site's existing dark-theme colours */
+html.cosmos-site .clients, html.cosmos-site .section--cream { color: var(--txt); }
+html.cosmos-site .clients .eyebrow, html.cosmos-site .section--cream .eyebrow { color: var(--orange); }
+html.cosmos-site .clients .lead, html.cosmos-site .section--cream .lead, html.cosmos-site .clients__note { color: var(--txt-mute); }
+html.cosmos-site .section--cream .accent-t { color: var(--teal-2); }
+html.cosmos-site .section--cream .btn--ghost { --fg: var(--txt); border-color: rgba(244,241,234,.22); }
+html.cosmos-site .section--cream .btn--ghost::before { background: rgba(244,241,234,.06); }
+html.cosmos-site .section--cream .dot-grid { color: rgba(244,241,234,.16); }
+/* the client logos are dark line art: their wall keeps its cream ground, as one panel */
+html.cosmos-site .logowall { background: var(--cream); border-radius: var(--radius-lg); overflow: hidden; border: 0; }
+html.cosmos-site .section .h-sec, html.cosmos-site .section .lead { text-shadow: 0 2px 24px rgba(5,7,10,.55); }
+
+/* top-row micro-UI (Igloo-like corner labels, restrained) */
+.h3d__meta, .h3d__hint { position: absolute; z-index: 2; top: clamp(5.6rem, 12vh, 7rem); pointer-events: none;
+  font: 600 .66rem/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(244,241,234,.62); }
+.h3d__meta { inset-inline-start: clamp(1.2rem, 4vw, 2.5rem); display: flex; gap: .9rem; align-items: baseline; }
+.h3d__index { color: var(--orange); }
+html.lang-ar .h3d__tag { font-family: var(--f-ar); letter-spacing: .02em; font-size: .85rem; text-transform: none; }
+.h3d__hint { inset-inline-end: clamp(1.2rem, 4vw, 2.5rem); text-align: end; }
+html.lang-ar .h3d__hint { font-family: var(--f-ar); letter-spacing: .02em; font-size: .82rem; text-transform: none; }
+.h3d__hint--touch { display: none; }
+@media (pointer: coarse) { .h3d__hint--fine { display: none; } .h3d__hint--touch { display: inline; } }
+html.motion-reduce .h3d__hint, html.no-webgl .h3d__hint { display: none; }
+
+/* copy: bottom band, editorial */
+.h3d__copy { position: absolute; z-index: 2; inset-inline: 0; bottom: 0; pointer-events: none;
+  padding: 0 clamp(1.2rem, 4vw, 2.5rem) clamp(2.2rem, 6vh, 3.6rem);
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2rem 4rem; align-items: end;
+  opacity: calc(1 - var(--h3d-exit) * 2.6); transform: translateY(calc(var(--h3d-exit) * -60px)); }
+.h3d__copy a { pointer-events: auto; }
+.h3d__title { font-family: var(--f-display); font-weight: 900; color: #F4F1EA;
+  font-size: clamp(2.1rem, 4.4vw, 4.3rem); line-height: 1.06; letter-spacing: -.015em; }
+html.lang-ar .h3d__title { line-height: 1.22; letter-spacing: 0; }
+.h3d__line { display: inline-block; }
+.h3d__title em { font-style: normal; color: var(--teal-2); }
+.h3d__aside { max-width: 30rem; justify-self: end; }
+.h3d__sub { color: rgba(244,241,234,.72); font-size: clamp(.98rem, 1.15vw, 1.08rem); line-height: 1.75; margin-bottom: 1.4rem; }
+.h3d__sub b { color: #F4F1EA; }
+.h3d__ctas { display: flex; flex-wrap: wrap; gap: .7rem; }
+.h3d__btn { display: inline-flex; align-items: center; gap: .55rem; padding: .85rem 1.4rem; border-radius: 100px;
+  font-weight: 800; font-size: .92rem; color: #F4F1EA; border: 1px solid rgba(244,241,234,.18);
+  background: rgba(255,255,255,.03); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: border-color .35s ease, background .35s ease, transform .35s cubic-bezier(.16,1,.3,1); }
+.h3d__btn:hover { border-color: rgba(244,241,234,.45); transform: translateY(-2px); }
+.h3d__btn--primary { background: var(--orange); border-color: var(--orange); color: #fff; }
+.h3d__btn--primary:hover { background: #F07A40; border-color: #F07A40; }
+html.lang-ar .h3d__btn svg { transform: scaleX(-1); }
+
+/* scroll cue */
+.h3d__scroll { position: absolute; z-index: 2; left: 50%; bottom: clamp(.9rem, 2.4vh, 1.4rem); transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .45rem; color: rgba(244,241,234,.6);
+  font: 600 .62rem var(--f-en); letter-spacing: .24em; text-transform: uppercase; opacity: calc(1 - var(--h3d-exit) * 4); }
+html.lang-ar .h3d__scroll { font-family: var(--f-ar); letter-spacing: .04em; font-size: .78rem; }
+.h3d__scroll i { width: 1px; height: 34px; background: linear-gradient(rgba(244,241,234,.6), transparent); transform-origin: top; animation: h3d-cue 2.4s cubic-bezier(.65,0,.35,1) infinite; }
+@keyframes h3d-cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* copy entrance: CSS-only so the headline never waits for the 3D bundle (LCP-safe) */
+html.motion-full .h3d__meta, html.motion-full .h3d__line, html.motion-full .h3d__aside, html.motion-full .h3d__hint {
+  animation: h3d-rise 1.1s cubic-bezier(.16,1,.3,1) both; }
+html.motion-full .h3d__line:nth-child(2) { animation-delay: .12s; }
+html.motion-full .h3d__aside { animation-delay: .3s; }
+html.motion-full .h3d__meta, html.motion-full .h3d__hint { animation-delay: .5s; }
+@keyframes h3d-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+/* the old nav sits over the hero for now (navigation is Milestone B) */
+.h3d ~ .section:first-of-type { position: relative; }
+
+@media (max-width: 900px) {
+  .h3d__copy { grid-template-columns: 1fr; gap: 1.1rem; padding-bottom: clamp(4.2rem, 9vh, 5rem); }
+  .h3d__aside { justify-self: stretch; max-width: none; }
+  .h3d__title { font-size: clamp(2rem, 8.4vw, 3rem); }
+  html.lang-ar .h3d__title { font-size: clamp(2rem, 8.8vw, 3rem); }
+  .h3d__sub { font-size: .95rem; margin-bottom: 1rem; }
+  .h3d__hint { display: none; }
+  .h3d__ctas .h3d__btn { flex: 1 1 auto; justify-content: center; }
+}
+html.motion-reduce .h3d__scroll i { animation: none; transform: none; }
+
+/* screen-reader-only text (the site had no such utility) */
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* The site's html/body use overflow-x:hidden, which turns them into scroll containers and breaks
+   position:sticky for the hero stage. overflow-x:clip prevents horizontal scroll identically
+   without creating a scroll container. Older browsers keep the old behaviour (hero just scrolls). */
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+}
+
+/* ---------- section continuity: dark ↔ cream without a hard cut ---------- */
+.h3d ~ .clients { z-index: 2; }
+.h3d ~ .clients::before, .h3d ~ .clients::after { content: ""; position: absolute; left: 0; right: 0; height: clamp(40px, 9vh, 96px); pointer-events: none; }
+.h3d ~ .clients::before { top: calc(-1 * clamp(40px, 9vh, 96px)); background: linear-gradient(to bottom, rgba(244,241,234,0), var(--cream)); }
+.h3d ~ .clients::after { bottom: calc(-1 * clamp(40px, 9vh, 96px)); background: linear-gradient(to bottom, var(--cream), rgba(244,241,234,0)); }
+
+
+/* phones: reveals are quick so fast swipes never show empty areas waiting to fade in */
+@media (max-width: 760px) {
+  [data-reveal], .case, .g-item { transition-duration: .45s !important; transition-delay: 0s !important; }
+}

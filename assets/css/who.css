@@ -1,0 +1,98 @@
+/* =====================================================================
+   SCENE 02 — WHO WE ARE
+   Modes:  journey (3D + motion)  ·  journey before the 3D has booted  ·  static (reduced / no WebGL / no JS)
+   CSS vars set by the scene: --who-in (0..1 arrival), --who-out (0..1 leaving),
+   --who-labels (structure presence), --who-b (step progress 0..1)
+   ===================================================================== */
+.who { position: relative; --who-in: 1; --who-out: 0; --who-labels: 0; --who-b: 0; color: #F4F1EA; }
+.who__eyebrow { font: 700 .72rem var(--f-en); letter-spacing: .26em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.1rem;
+  display: inline-flex; align-items: center; gap: .7rem; }
+.who__eyebrow::before { content: ""; width: 28px; height: 1.5px; background: currentColor; }
+html.lang-ar .who__eyebrow { font-family: var(--f-ar); letter-spacing: .04em; font-size: .95rem; text-transform: none; }
+.who__title { font-family: var(--f-display); font-weight: 900; font-size: clamp(2.2rem, 3.9vw, 4.2rem); line-height: 1.04; letter-spacing: -.02em; margin-bottom: 1.3rem; }
+html.lang-ar .who__title { line-height: 1.25; letter-spacing: 0; }
+.who__title em { font-style: normal; display: block; background: linear-gradient(100deg, #FD8502 0%, #F9A24A 38%, #2AC4CC 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.who__lead { font-size: clamp(1.25rem, 1.65vw, 1.5rem); line-height: 1.7; color: rgba(244,241,234,.9); max-width: 38rem; }
+.who__steps { list-style: none; }
+.who__word { font-family: var(--f-display-en); font-weight: 900; letter-spacing: .12em; color: #F4F1EA; }
+html.lang-ar .who__word { font-family: var(--f-ar); letter-spacing: 0; }
+.who__name { font-weight: 800; }
+.who__desc { color: rgba(244,241,234,.86); }
+.who__step:nth-child(2) .who__word { color: #2AA0A5; } .who__step:nth-child(3) .who__word { color: #FD8502; } .who__step:nth-child(4) .who__word { color: #2AC4CC; }
+
+/* ---------------- STATIC (reduced motion / no WebGL / no JS): a calm, complete section ---------------- */
+html:not(.motion-full) .who, html.no-webgl .who, html:not(.js) .who {
+  padding: clamp(5rem, 10vw, 8rem) clamp(1.2rem, 4vw, 2.5rem);
+  background: radial-gradient(60% 70% at 85% 30%, rgba(14,70,78,.32), transparent 70%),
+              radial-gradient(50% 60% at 10% 80%, rgba(110,52,18,.24), transparent 70%), #0B0C0F; }
+html:not(.motion-full) .who__sticky, html.no-webgl .who__sticky, html:not(.js) .who__sticky { max-width: 1240px; margin: 0 auto; }
+html:not(.motion-full) .who__steps, html.no-webgl .who__steps, html:not(.js) .who__steps {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; margin-top: 3rem; counter-reset: s; }
+html:not(.motion-full) .who__step, html.no-webgl .who__step, html:not(.js) .who__step {
+  display: flex; flex-direction: column; gap: .45rem; padding-top: 1.1rem; border-top: 1px solid rgba(244,241,234,.16); }
+html:not(.motion-full) .who__word, html.no-webgl .who__word, html:not(.js) .who__word { font-size: 1.9rem; }
+html:not(.motion-full) .who__name, html.no-webgl .who__name, html:not(.js) .who__name { font-size: 1.3rem; }
+html:not(.motion-full) .who__desc, html.no-webgl .who__desc, html:not(.js) .who__desc { font-size: 1.12rem; line-height: 1.6; }
+@media (max-width: 760px) {
+  html:not(.motion-full) .who__steps, html.no-webgl .who__steps, html:not(.js) .who__steps { grid-template-columns: 1fr 1fr; gap: 1.4rem 1rem; }
+}
+
+/* ---------------- JOURNEY: a pinned stage inside the same cosmos ---------------- */
+html.js.motion-full.has-webgl .who { height: 300vh; }
+html.js.motion-full.has-webgl .who__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; padding: 6rem clamp(1.2rem, 6vw, 6rem) 3rem; }
+html.js.motion-full.has-webgl .who__copy { position: relative; z-index: 2; max-width: min(40rem, 44vw);
+  opacity: calc(1 - var(--who-out)); filter: blur(calc(var(--who-out) * 6px)); transform: translateY(calc(var(--who-out) * -40px)); }
+/* light-wipe reveal in the reading direction, scrubbed by scroll (no time-based animation) */
+html.js.motion-full.has-webgl .who__copy > * {
+  --wipe: clamp(0, (var(--who-in) - var(--d, 0)) / (1 - var(--d, 0)), 1);
+  -webkit-mask-image: linear-gradient(var(--wipe-dir, 90deg), #000 calc(var(--wipe) * 150% - 50%), transparent calc(var(--wipe) * 150%));
+          mask-image: linear-gradient(var(--wipe-dir, 90deg), #000 calc(var(--wipe) * 150% - 50%), transparent calc(var(--wipe) * 150%)); }
+html[dir="rtl"] .who { --wipe-dir: 270deg; }
+html.js.motion-full.has-webgl .who__title { --d: .15; text-shadow: 0 0 40px rgba(253,133,2,.12); }
+html.js.motion-full.has-webgl .who__lead { --d: .4; }
+html.js.motion-full.has-webgl .who__steps { --d: .55; }
+
+/* STEP RAIL: four words on a line of light that fills with scroll; the active step's name and
+   description sit beneath it — one caption at a time, always in the same readable place */
+html.js.motion-full.has-webgl .who__steps { position: relative; display: grid; grid-template-columns: repeat(4, auto);
+  justify-content: start; column-gap: clamp(1.1rem, 2.2vw, 2rem); margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  padding-top: 1.3rem; min-height: 11.4rem; max-width: 40rem; }
+html.js.motion-full.has-webgl .who__steps::before, html.js.motion-full.has-webgl .who__steps::after { content: ""; position: absolute;
+  top: 0; inset-inline-start: 0; height: 1.5px; border-radius: 2px; }
+html.js.motion-full.has-webgl .who__steps::before { inset-inline-end: 0; background: rgba(244,241,234,.14); }
+html.js.motion-full.has-webgl .who__steps::after { width: calc(var(--who-b) * 100%);
+  background: linear-gradient(90deg, #FD8502, #2AC4CC); box-shadow: 0 0 12px rgba(253,133,2,.45); }
+html[dir="rtl"].js.motion-full.has-webgl .who__steps::after { background: linear-gradient(270deg, #FD8502, #2AC4CC); }
+html.js.motion-full.has-webgl .who__word { display: block; font-size: 1.02rem; letter-spacing: .18em; opacity: .55; transition: opacity .3s ease, color .3s ease; }
+html.lang-ar.js.motion-full.has-webgl .who__word { font-size: 1.32rem; letter-spacing: 0; }
+html.js.motion-full.has-webgl .who__step.is-active .who__word { opacity: 1; }
+html.js.motion-full.has-webgl .who__name, html.js.motion-full.has-webgl .who__desc { position: absolute; inset-inline: 0; opacity: 0;
+  transition: opacity .14s ease; pointer-events: none; }
+html.js.motion-full.has-webgl .who__name { top: 3.9rem; font-size: clamp(1.36rem, 1.8vw, 1.62rem); line-height: 1.3; color: #FDFDFD; }
+html.js.motion-full.has-webgl .who__desc { top: 6.35rem; font-size: clamp(1.15rem, 1.4vw, 1.24rem); line-height: 1.6; }
+/* step changes: the old caption leaves before the new one arrives (never two texts on top of each other) */
+html.js.motion-full.has-webgl .who__step.is-active .who__name, html.js.motion-full.has-webgl .who__step.is-active .who__desc { opacity: 1; transition: opacity .3s ease .14s; }
+/* before the 3D scene has booted (phones load it after idle) the first step is shown, so the rail is never empty */
+html.js.motion-full.has-webgl:not(.who-3d) .who__step:first-child :is(.who__word, .who__name, .who__desc) { opacity: 1; }
+
+/* readability: a soft dark field behind the text column, part of the space (no box, no edge) */
+html.js.motion-full.has-webgl .who__copy::before { content: ""; position: absolute; z-index: -1; inset: -18% -30% -14% -30%;
+  background: radial-gradient(closest-side, rgba(8,9,12,.62), rgba(8,9,12,.32) 55%, transparent); pointer-events: none; }
+
+/* phones (portrait): the structure rises in the upper part of the frame; the copy sits below it */
+@media (max-aspect-ratio: 1/1) {
+  html.js.motion-full.has-webgl .who { height: 260vh; }
+  html.js.motion-full.has-webgl .who__sticky { justify-content: flex-start; padding: 0 1.2rem; }
+  html.js.motion-full.has-webgl .who__copy { position: absolute; top: 47%; inset-inline: 1.2rem; max-width: none; }
+  html.js.motion-full.has-webgl .who__eyebrow { margin-bottom: .6rem; }
+  html.js.motion-full.has-webgl .who__title { font-size: clamp(1.75rem, 7.6vw, 2.5rem); margin-bottom: .6rem; }
+  html.js.motion-full.has-webgl .who__lead { font-size: 1.18rem; line-height: 1.6; }
+  html.js.motion-full.has-webgl .who__steps { margin-top: 1.1rem; padding-top: .8rem; min-height: 9.6rem; column-gap: .9rem; max-width: none; }
+  html.js.motion-full.has-webgl .who__word { font-size: .96rem; letter-spacing: .1em; }
+  html.lang-ar.js.motion-full.has-webgl .who__word { font-size: 1.24rem; }
+  html.js.motion-full.has-webgl .who__name { top: 3.1rem; font-size: 1.28rem; }
+  html.js.motion-full.has-webgl .who__desc { top: 5rem; font-size: 1.12rem; line-height: 1.5; }
+  html.js.motion-full.has-webgl .who__copy::before { inset: -10% -12% -8% -12%; }
+}

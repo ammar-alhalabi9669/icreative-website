@@ -1,0 +1,167 @@
+/* =====================================================================
+   SCENE 03 — SELECTED WORK · cinematic showcase (Phase 2A)
+   Modes: journey (3D + motion: a pinned stage overlapping the end of Who We Are; the title and the artwork are
+   projected into the 3D space by src/hero3d/showcase.js) · static (reduced motion / no WebGL / no JS).
+   CSS vars set by the scene: --sc-intro-in, --sc-intro-out, --sc-frame-in, --sc-info (0..1)
+   ===================================================================== */
+.showcase { position: relative; color: #F4F1EA; padding: clamp(5rem, 10vw, 8rem) clamp(1.2rem, 5vw, 4rem); }
+.showcase__anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.showcase__sticky { max-width: 1240px; margin: 0 auto; }
+.showcase__intro { text-align: center; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.showcase__intro .eyebrow { justify-content: center; }
+.showcase__title { margin-inline: auto; }
+.showcase__lead { color: rgba(244,241,234,.74); max-width: 40rem; margin: 1rem auto 0; line-height: 1.75; }
+
+/* the project: information on the reading-start side, the artwork on the other */
+.showcase__project { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.6rem, 4vw, 4.5rem); align-items: center; }
+.showcase__info { max-width: 30rem; }
+.showcase__meta { display: flex; align-items: center; gap: .9rem; margin-bottom: 1.4rem; }
+.showcase__num { font: 700 .78rem var(--f-en); letter-spacing: .2em; color: var(--orange); }
+.showcase__num::after { content: ""; display: inline-block; width: 2.2rem; height: 1px; margin-inline-start: .9rem; vertical-align: middle; background: rgba(244,241,234,.35); }
+.showcase__ind { font: 600 .74rem var(--f-en); letter-spacing: .18em; text-transform: uppercase; color: rgba(244,241,234,.7);
+  padding: .38rem .8rem; border: 1px solid rgba(244,241,234,.2); border-radius: 999px; }
+html.lang-ar .showcase__ind { font-family: var(--f-ar); letter-spacing: 0; text-transform: none; font-size: .85rem; }
+/* the client's own mark, shown as supplied (black line art on its white ground) */
+.showcase__logo { width: 64px; height: 64px; border-radius: 14px; background: #FDFDFD; padding: 4px; display: block; margin-bottom: 1.1rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+.showcase__name { font-family: var(--f-display); font-weight: 900; font-size: clamp(3rem, 6.2vw, 6rem); line-height: .95; letter-spacing: -.03em; }
+html.lang-ar .showcase__name { line-height: 1.15; letter-spacing: 0; }
+.showcase__role { margin-top: .9rem; font-weight: 700; color: #F9A24A; font-size: clamp(.95rem, 1.2vw, 1.08rem); }
+.showcase__brief { margin-top: 1rem; color: rgba(244,241,234,.8); line-height: 1.75; font-size: clamp(1rem, 1.25vw, 1.15rem); }
+.showcase__explore { margin-top: 1.8rem; display: inline-flex; align-items: center; gap: .7rem; min-height: 48px; padding: .85rem 1.5rem;
+  border-radius: 999px; border: 1px solid rgba(253,133,2,.7); background: rgba(253,133,2,.12); color: #FDFDFD; font: inherit; font-weight: 700;
+  cursor: pointer; transition: background .25s ease, border-color .25s ease, transform .25s ease; }
+.showcase__explore:hover { background: #FD8502; border-color: #FD8502; }
+.showcase__explore:focus-visible { outline: 2px solid #F4F1EA; outline-offset: 3px; }
+html[dir="rtl"] .showcase__explore svg { transform: scaleX(-1); }
+/* the artwork: square, uncropped, a quiet edge and the warmth of the project's own neon */
+.showcase__frame { margin: 0; aspect-ratio: var(--ar, 1);   /* the artwork's own proportions (set from the project data) */
+   position: relative; border-radius: 18px; background: #0B0B0D;
+  border: 1px solid rgba(244,241,234,.14); box-shadow: 0 40px 120px rgba(0,0,0,.55), 0 0 90px rgba(255,80,40,.14); }
+.showcase__view { position: absolute; inset: 0; border-radius: 17px; overflow: hidden; }
+.showcase__slide { position: absolute; inset: 0; transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+.showcase__slide.is-entering { opacity: 0; transform: translateX(var(--from, 0)) scale(1.015); }
+.showcase__slide img { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+/* an image whose proportions differ from the frame: shown whole, over a blurred, darkened copy of itself */
+.showcase__slide img.showcase__fill { object-fit: cover; filter: blur(22px) brightness(.38) saturate(1.1); transform: scale(1.12); }
+/* image navigation: two quiet arrows just outside the frame's sides */
+.showcase__frame[tabindex] { touch-action: pan-y pinch-zoom; }
+.showcase__frame:focus-visible { outline: 2px solid rgba(42,196,204,.85); outline-offset: 5px; }
+.showcase__nav { position: absolute; top: 50%; z-index: 2; width: 46px; height: 46px; margin-top: -23px; display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid rgba(244,241,234,.22); background: rgba(12,13,16,.55); color: #F4F1EA; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease, transform .25s ease; }
+.showcase__nav--prev { inset-inline-start: -66px; }
+.showcase__nav--next { inset-inline-end: -66px; }
+html[dir="rtl"] .showcase__nav svg { transform: scaleX(-1); }
+@media (hover: hover) {
+  .showcase__nav:hover { border-color: rgba(253,133,2,.85); color: #FD8502; box-shadow: 0 0 22px rgba(253,133,2,.28); }
+  .showcase__nav--next:hover { border-color: rgba(42,196,204,.85); color: #2AC4CC; box-shadow: 0 0 22px rgba(42,196,204,.28); }
+}
+.showcase__nav:active { transform: scale(.94); }
+.showcase__nav:focus-visible { outline: 2px solid #F4F1EA; outline-offset: 3px; }
+@media (max-width: 760px) {
+  /* little room beside the frame on phones: the arrows sit on its edges, half outside */
+  .showcase__nav { width: 40px; height: 40px; margin-top: -20px; }
+  .showcase__nav--prev { inset-inline-start: -20px; }
+  .showcase__nav--next { inset-inline-end: -20px; }
+}
+@media (prefers-reduced-motion: reduce) { .showcase__slide { transition: none; } }
+@media (max-width: 760px) {
+  .showcase__project { grid-template-columns: 1fr; }
+  .showcase__frame { order: -1; }
+}
+
+/* ---------------- JOURNEY: a pinned stage inside the same cosmos ---------------- */
+html.js.motion-full.has-webgl .showcase { --sc-intro-in: 0; --sc-intro-out: 1; --sc-frame-in: 1; --sc-info: 1;
+  height: 280vh; margin-top: -100vh; padding: 0; z-index: 2; }
+/* every "Work" link lands on the composed showcase (95% through the pinned track) */
+html.js.motion-full.has-webgl .showcase__anchor { top: calc(180vh * .95 + 92px); }   /* + the site-wide scroll-padding-top */
+html.js.motion-full.has-webgl .showcase__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; max-width: none; overflow: clip;
+  display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); padding: 88px clamp(1.2rem, 6vw, 6rem) 4vh; }
+html.js.motion-full.has-webgl .showcase__intro, html.js.motion-full.has-webgl .showcase__project { grid-area: 1 / 1; align-self: center; }
+/* depth order: the title is nearer the camera than the artwork, so it is drawn in front of it */
+html.js.motion-full.has-webgl .showcase__intro { position: relative; z-index: 2; }
+html.js.motion-full.has-webgl .showcase__project { position: relative; z-index: 1; }
+/* the title: composed in the middle of the space; the camera then flies through it */
+html.js.motion-full.has-webgl .showcase__intro { margin: 0 auto; max-width: 56rem; transform-origin: 0 0; will-change: transform;
+  opacity: calc(var(--sc-intro-in) * (1 - var(--sc-intro-out))); pointer-events: none; }
+html.js.motion-full.has-webgl .showcase__title { font-size: clamp(2.6rem, 6vw, 5.6rem); line-height: 1.02; }
+html.lang-ar.js.motion-full.has-webgl .showcase__title { line-height: 1.25; }
+html.js.motion-full.has-webgl .showcase__title, html.js.motion-full.has-webgl .showcase__lead { text-shadow: 0 2px 30px rgba(5,7,10,.7); }
+html.js.motion-full.has-webgl .showcase__project { justify-self: center; width: min(100%, 1320px); }
+html.js.motion-full.has-webgl .showcase__frame { width: min(calc(64vh * var(--ar, 1)), 44vw); justify-self: center; transform-origin: 0 0; will-change: transform;
+  opacity: var(--sc-frame-in); }
+/* the project's information arrives once the artwork has landed: a light wipe in the reading direction */
+html.js.motion-full.has-webgl .showcase__info > * { --w: clamp(0, (var(--sc-info) - var(--d, 0)) / (1 - var(--d, 0)), 1);
+  -webkit-mask-image: linear-gradient(var(--wipe-dir, 90deg), #000 calc(var(--w) * 150% - 50%), transparent calc(var(--w) * 150%));
+          mask-image: linear-gradient(var(--wipe-dir, 90deg), #000 calc(var(--w) * 150% - 50%), transparent calc(var(--w) * 150%)); }
+html[dir="rtl"] .showcase { --wipe-dir: 270deg; }
+html.js.motion-full.has-webgl .showcase__info > :nth-child(2) { --d: .1; }
+html.js.motion-full.has-webgl .showcase__info > :nth-child(3) { --d: .2; }
+html.js.motion-full.has-webgl .showcase__info > :nth-child(4) { --d: .3; }
+html.js.motion-full.has-webgl .showcase__info > :nth-child(5) { --d: .4; }
+html.js.motion-full.has-webgl .showcase__info > :nth-child(6) { --d: .5; }
+/* not reachable until it is on screen (keyboard/AT never land on an invisible button) */
+html.js.motion-full.has-webgl .showcase[data-info-off] :is(.showcase__explore, .showcase__nav) { visibility: hidden; }
+/* the image arrows arrive with the information, once the artwork has landed */
+html.js.motion-full.has-webgl .showcase__nav { opacity: var(--sc-info); }
+/* readability: a soft dark field behind the information (part of the space, no box) */
+html.js.motion-full.has-webgl .showcase__info { position: relative; }
+html.js.motion-full.has-webgl .showcase__info::before { content: ""; position: absolute; z-index: -1; inset: -20% -30%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(8,9,12,.6), rgba(8,9,12,.25) 60%, transparent); opacity: var(--sc-info); }
+
+/* phones (portrait): the artwork fills the upper part of the frame; the information sits beneath it */
+@media (max-aspect-ratio: 1/1) {
+  html.js.motion-full.has-webgl .showcase { height: 250vh; }
+  html.js.motion-full.has-webgl .showcase__anchor { top: calc(150vh * .95 + 92px); }
+  html.js.motion-full.has-webgl .showcase__sticky { padding: 76px 1.2rem calc(env(safe-area-inset-bottom) + 3vh); }
+  html.js.motion-full.has-webgl .showcase__project { grid-template-columns: 1fr; gap: 1.2rem; align-self: center; }
+  html.js.motion-full.has-webgl .showcase__frame { order: -1; width: min(86vw, calc(44svh * var(--ar, 1))); }
+  html.js.motion-full.has-webgl .showcase__nav { width: 40px; height: 40px; margin-top: -20px; }
+  html.js.motion-full.has-webgl .showcase__nav--prev { inset-inline-start: max(-52px, calc((100% - 100vw) / 2 + 6px)); }
+  html.js.motion-full.has-webgl .showcase__nav--next { inset-inline-end: max(-52px, calc((100% - 100vw) / 2 + 6px)); }
+  html.js.motion-full.has-webgl .showcase__info { max-width: none; }
+  html.js.motion-full.has-webgl .showcase__meta { margin-bottom: .8rem; }
+  html.js.motion-full.has-webgl .showcase__logo { width: 48px; height: 48px; border-radius: 11px; margin-bottom: .6rem; float: inline-end; margin-inline-start: 1rem; }
+  html.js.motion-full.has-webgl .showcase__name { font-size: clamp(2.4rem, 11vw, 3.4rem); }
+  html.js.motion-full.has-webgl .showcase__role { margin-top: .5rem; font-size: .92rem; }
+  html.js.motion-full.has-webgl .showcase__brief { margin-top: .6rem; font-size: .95rem; line-height: 1.6; }
+  html.js.motion-full.has-webgl .showcase__explore { margin-top: 1rem; }
+  html.js.motion-full.has-webgl .showcase__title { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+}
+
+/* ---------------- PROJECT DETAILS (dialog) ---------------- */
+html.pd-open { overflow: hidden; scrollbar-gutter: stable; }
+.pdetail { position: fixed; inset: 0; z-index: 1300; background: rgba(8,9,12,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  display: flex; justify-content: center; opacity: 0; transition: opacity .3s ease; }
+.pdetail[hidden] { display: none; }
+.pdetail.is-open { opacity: 1; }
+.pdetail__scroll { position: relative; width: min(1080px, 100%); height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  padding: clamp(4.5rem, 8vw, 6rem) clamp(1.2rem, 5vw, 3.5rem) clamp(2.5rem, 6vw, 4rem); color: #F4F1EA; }
+.pdetail__close { position: sticky; top: 0; float: inline-end; margin-top: -3rem; z-index: 2; width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgba(244,241,234,.25); background: rgba(14,15,18,.85); color: #FDFDFD; font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.pdetail__close:hover { background: #FD8502; border-color: #FD8502; }
+.pdetail__close:focus-visible, .pd-back:focus-visible { outline: 2px solid #F4F1EA; outline-offset: 3px; }
+.pd-ind { font: 600 .74rem var(--f-en); letter-spacing: .18em; text-transform: uppercase; color: #FD8502; }
+html.lang-ar .pd-ind { font-family: var(--f-ar); letter-spacing: 0; text-transform: none; font-size: .9rem; }
+.pd-name { font-family: var(--f-display); font-weight: 900; font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1; margin-top: .6rem; }
+html.lang-ar .pd-name { line-height: 1.2; }
+.pd-role { margin-top: .7rem; color: #F9A24A; font-weight: 700; }
+.pd-body { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(1.6rem, 4vw, 3.5rem); margin-top: clamp(2rem, 4vw, 3rem); align-items: start; }
+.pd-text { position: sticky; top: 1rem; }
+.pd-block + .pd-block { margin-top: 1.6rem; }
+.pd-block h3 { font: 800 .74rem var(--f-en); letter-spacing: .16em; text-transform: uppercase; color: rgba(244,241,234,.55); margin-bottom: .5rem; }
+html.lang-ar .pd-block h3 { font-family: var(--f-ar); letter-spacing: 0; font-size: .95rem; }
+.pd-block p { line-height: 1.8; color: rgba(244,241,234,.86); }
+.pd-media { display: grid; gap: 1.4rem; }
+.pd-media figure { margin: 0; }
+.pd-media img { display: block; width: 100%; height: auto; object-fit: contain; border-radius: 14px; background: #0B0B0D;
+  border: 1px solid rgba(244,241,234,.1); }
+.pd-media figcaption { margin-top: .55rem; font-size: .88rem; color: rgba(244,241,234,.6); }
+.pd-foot { margin-top: 2.5rem; text-align: center; }
+.pd-back { min-height: 48px; padding: .8rem 1.6rem; border-radius: 999px; border: 1px solid rgba(244,241,234,.3); background: transparent; color: #FDFDFD;
+  font: inherit; font-weight: 700; cursor: pointer; }
+.pd-back:hover { border-color: #FD8502; color: #FD8502; }
+@media (max-width: 760px) { .pd-body { grid-template-columns: 1fr; } .pd-text { position: static; } }
+@media (prefers-reduced-motion: reduce) { .pdetail { transition: none; } }
