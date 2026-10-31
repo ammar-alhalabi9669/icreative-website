@@ -39,7 +39,8 @@ html:not(.js) .h3d__sticky, html.no-webgl .h3d__sticky {
 /* ---------- the cosmos continues behind the whole site (html.cosmos-site is set by the 3D scene when it runs) ----------
    Section backgrounds become transparent; a light scrim keeps text readable. Content blocks (cards, panels, images,
    the client logo wall) keep their own grounds. Reduced motion / no WebGL keep the original solid sections. */
-html.js.motion-full.has-webgl .work-more { background: transparent; padding-top: clamp(3rem, 8vh, 6rem); }
+html.js.motion-full.has-webgl .work-more { background: transparent; padding-top: clamp(1rem, 2vh, 1.5rem);
+  margin-top: calc(-1 * clamp(3rem, 10vh, 6rem)); }
 html.cosmos-site body { background: var(--ink); }
 html.cosmos-site .clients, html.cosmos-site .section--cream, html.cosmos-site .statement, html.cosmos-site .process,
 html.cosmos-site .footer { background: transparent; }

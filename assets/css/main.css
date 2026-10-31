@@ -488,9 +488,30 @@ html.lang-ar .statement__words{ font-family:var(--f-display); text-transform:non
   border-block-end:1px solid rgba(20,22,27,.08);
   overflow:hidden;
 }
+.logo-badge{
+  position:relative; display:grid; place-items:center;
+  width:clamp(64px, 56%, 120px); aspect-ratio:1; border-radius:50%;
+  padding:0; appearance:none; cursor:pointer; touch-action:manipulation;
+  transition:transform .28s ease, box-shadow .28s ease;
+  background:#fff; border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 3px 0 rgba(45,46,49,.08), 0 10px 20px -12px rgba(20,22,27,.32),
+    inset 0 1px 2px rgba(255,255,255,.9);
+  overflow:hidden;
+}
+.logo-badge[aria-pressed="true"]{
+  transform:scale(1.18) translateY(-2px);
+  box-shadow:0 4px 0 rgba(45,46,49,.08),0 15px 25px -12px rgba(20,22,27,.36);
+}
+.logo-badge:focus-visible{ outline:2px solid var(--orange); outline-offset:5px; }
+@media(prefers-reduced-motion:reduce){ .logo-badge{ transition:none; } }
+.logo-badge::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(145deg,rgba(255,255,255,.13),transparent 45%,rgba(20,22,27,.045));
+  box-shadow:inset 0 1px 3px rgba(255,255,255,.7), inset 0 -2px 4px rgba(20,22,27,.07);
+}
 .logo-cell img{
   position:absolute; inset:0; margin:auto; object-fit:contain;
-  max-width:74%; max-height:70%; width:auto; height:auto;
+  width:100%; height:100%;
 }
 .clients__note{ text-align:center; margin-top:2.4rem; color:var(--txt-dark-mute); font-size:.98rem; }
 
@@ -499,6 +520,10 @@ html.lang-ar .statement__words{ font-family:var(--f-display); text-transform:non
    lead story; the rest follow in a calmer supporting row. Same component, same tokens —
    only scale and rhythm change, so the hero card never looks like a different system. */
 .cases{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem; margin-top:3.6rem; }
+/* These cards follow the gallery directly, without a heading that needs extra space. */
+.work-more{ padding-block:clamp(1.5rem,3vw,2.5rem); }
+.work-more .cases{ margin-top:0; }
+.work-more + .clients{ padding-top:clamp(2rem,4vw,3rem); }
 .case{
   position:relative; border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   background:var(--ink-2); border:1px solid var(--ink-4); aspect-ratio:4/3;

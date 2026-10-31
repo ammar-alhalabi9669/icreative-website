@@ -1,6 +1,14 @@
 (function(){
   "use strict";
   var html = document.documentElement;
+  /* Click/tap (or Enter/Space) to enlarge one client badge; click it again to restore. */
+  document.querySelectorAll('.logo-badge').forEach(function(badge){
+    badge.addEventListener('click', function(){
+      var expand = badge.getAttribute('aria-pressed') !== 'true';
+      document.querySelectorAll('.logo-badge').forEach(function(other){ other.setAttribute('aria-pressed', 'false'); });
+      badge.setAttribute('aria-pressed', String(expand));
+    });
+  });
 
   /* ---- i18n dictionary (attribute-based text) ---- */
   var DICT = {
@@ -297,13 +305,13 @@
      can't serve all of them, so every featured slug gets the vertical focal point that
      keeps its own headline/logo readable instead of sliced off by the card's aspect ratio. */
   var CASE_FOCUS = {bite:"32%", elite:"18%", autoway:"90%"};
-  PROJECTS.filter(function(p){return p.featured && p !== SHOW;}).forEach(function(p, idx){
+  PROJECTS.filter(function(p){return p.featured && p !== SHOW && p.slug !== 'bite';}).forEach(function(p){
     var il = indLabel(p.ind);
     var kp = p.kpis.slice(0,3).map(function(k){ return '<div class="case__kpi"><b>'+k.b+'</b><span>'+BI(k.ar,k.en)+'</span></div>'; }).join("");
     var story = p.challenge || p.brief; /* real copy already written for the case modal — never invented here */
     var logo = CASE_LOGOS[p.slug] ? '<span class="case__logo"><img src="'+ LOGOBASE+CASE_LOGOS[p.slug] +'" alt="" loading="lazy"></span>' : "";
     var el = document.createElement("article");
-    el.className = "case" + (idx === 0 ? " case--feature" : "");
+    el.className = "case";
     el.setAttribute("data-slug", p.slug);
     el.innerHTML =
       '<div class="case__media"><img loading="lazy" style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.webp" alt="'+p.name.en+'"></div>'+
@@ -333,6 +341,8 @@
       var im = p.images[k];
       if (im && !seen[im.f]) { seen[im.f] = 1; out.push({ im: im, p: p }); }   // never the same image twice
     });
+    var opening = out.findIndex(function(it){ return it.im.f === 'demas-14'; });
+    if (opening > 0) { var previous = out[0]; out[0] = out[opening]; out[opening] = previous; }
     return out;
   })();
   function scSlide(it, first){
@@ -348,7 +358,7 @@
     return BI(it.p.name.ar+' — '+it.im.t.ar+' — '+(i+1)+' من '+n, it.p.name.en+' — '+it.im.t.en+' — '+(i+1)+' of '+n); }
   function initShowcaseGallery(box){
     var frame = box.querySelector(".showcase__frame"), view = frame.querySelector(".showcase__view"), cap = frame.querySelector("figcaption"),
-      num = box.querySelector(".showcase__num"), client = box.querySelector(".showcase__ind"), n = GALLERY.length, idx = 0, token = 0;
+      num = box.querySelector(".showcase__num"), n = GALLERY.length, idx = 0, token = 0;
     var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var rtl = function(){ return document.documentElement.dir === "rtl"; };
     function preload(i){ var im = new Image(); im.decoding = "async"; im.src = IMGBASE+GALLERY[((i%n)+n)%n].im.f+'.webp'; }
@@ -369,7 +379,6 @@
         if (t !== token) return;                          // a newer step won: never stack two arrivals
         cap.innerHTML = scCaption(targetIndex);
         num.textContent = scCount(targetIndex);
-        client.innerHTML = BI(it.p.name.ar, it.p.name.en);
         frame.setAttribute("data-index", targetIndex); box.setAttribute("data-client", it.p.slug);
         var old = Array.prototype.slice.call(view.children);
         view.appendChild(slide);
@@ -411,7 +420,7 @@
     showBox.setAttribute("data-client", first.p.slug);
     showBox.innerHTML =
       '<div class="showcase__info">'+
-        '<div class="showcase__meta"><span class="showcase__num">'+scCount(0)+'</span><span class="showcase__ind">'+BI(first.p.name.ar,first.p.name.en)+'</span></div>'+
+        '<div class="showcase__meta"><span class="showcase__num">'+scCount(0)+'</span></div>'+
         '<h3 class="showcase__name" id="galleryTitle">'+BI("معرض الصور","Photo Gallery")+'</h3>'+
         '<p class="showcase__role">'+BI("بعض من أعمالنا","Selected Works")+'</p>'+
       '</div>'+
