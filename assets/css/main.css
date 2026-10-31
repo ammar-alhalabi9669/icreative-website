@@ -490,12 +490,8 @@ html.lang-ar .statement__words{ font-family:var(--f-display); text-transform:non
 }
 .logo-cell img{
   position:absolute; inset:0; margin:auto; object-fit:contain;
-  transition:opacity .55s var(--ease), transform .55s var(--ease);
+  max-width:74%; max-height:70%; width:auto; height:auto;
 }
-.logo-cell .lm{ max-width:60%; max-height:54%; opacity:.5; filter:none; }
-.logo-cell .lc{ max-width:74%; max-height:70%; opacity:0; transform:scale(.94); border-radius:14px; }
-.logo-cell:hover .lm{ opacity:0; transform:scale(1.02); }
-.logo-cell:hover .lc{ opacity:1; transform:scale(1); box-shadow:0 22px 44px -20px rgba(20,22,27,.45); }
 .clients__note{ text-align:center; margin-top:2.4rem; color:var(--txt-dark-mute); font-size:.98rem; }
 
 /* ---------- 19b. FEATURED CASE STUDIES ---------- */

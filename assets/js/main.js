@@ -97,7 +97,8 @@
      Edit PROJECTS below to add/remove work. Images live in assets/images/work/.
      KPIs are illustrative — replace with real client numbers.
      ============================================================ */
-  var IMGBASE = "assets/images/work/";
+  var IMGBASE = "assets/images/work/optimized/";
+  var THUMBBASE = "assets/images/work/thumbs/";
   var LOGOBASE = "assets/images/logos/";
   function BI(ar,en){ return '<span class="i18n-ar">'+ar+'</span><span class="i18n-en">'+en+'</span>'; }
 
@@ -305,7 +306,7 @@
     el.className = "case" + (idx === 0 ? " case--feature" : "");
     el.setAttribute("data-slug", p.slug);
     el.innerHTML =
-      '<div class="case__media"><img loading="lazy" style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.jpg" alt="'+p.name.en+'"></div>'+
+      '<div class="case__media"><img loading="lazy" style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.webp" alt="'+p.name.en+'"></div>'+
       '<div class="case__grad"></div>'+
       '<span class="case__count">'+p.images.length+' '+BI("صور","photos")+'</span>'+
       '<div class="case__body">'+
@@ -336,7 +337,7 @@
   })();
   function scSlide(it, first){
     var im = it.im, ar = (im.w||1280)/(im.h||1280), h0 = GALLERY[0].im, far = (h0.w||1280)/(h0.h||1280);
-    var src = IMGBASE+im.f+'.jpg', lazy = first ? ' loading="lazy"' : '';
+    var src = IMGBASE+im.f+'.webp', lazy = first ? ' loading="lazy"' : '';
     return '<div class="showcase__slide">'+
       (Math.abs(ar/far - 1) > 0.03 ? '<img class="showcase__fill" src="'+src+'" alt=""'+lazy+' decoding="async">' : '')+
       '<img src="'+src+'" width="'+(im.w||1280)+'" height="'+(im.h||1280)+'" alt="'+it.p.name.en+' — '+im.t.en+'"'+lazy+' decoding="async"></div>';
@@ -350,7 +351,7 @@
       num = box.querySelector(".showcase__num"), client = box.querySelector(".showcase__ind"), n = GALLERY.length, idx = 0, token = 0;
     var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var rtl = function(){ return document.documentElement.dir === "rtl"; };
-    function preload(i){ var im = new Image(); im.decoding = "async"; im.src = IMGBASE+GALLERY[((i%n)+n)%n].im.f+'.jpg'; }
+    function preload(i){ var im = new Image(); im.decoding = "async"; im.src = IMGBASE+GALLERY[((i%n)+n)%n].im.f+'.webp'; }
     function go(step){
       idx = (idx + step + n) % n;
       var it = GALLERY[idx], t = ++token, wrap = document.createElement("div");
@@ -359,17 +360,22 @@
       slide.classList.add("is-entering");
       /* the new image drifts in a few pixels from the side it comes from, in the reading direction */
       slide.style.setProperty("--from", (step > 0 ? 1 : -1) * (rtl() ? -1 : 1) * 14 + "px");
-      cap.innerHTML = scCaption(idx);
-      num.textContent = scCount(idx);
-      client.innerHTML = BI(it.p.name.ar, it.p.name.en);
-      frame.setAttribute("data-index", idx); box.setAttribute("data-client", it.p.slug);
-      (img.decode ? img.decode() : Promise.resolve()).catch(function(){}).then(function(){
+      var targetIndex = idx;
+      img.decode().catch(function(){
+        // A transient network failure gets one retry; never replace the current photo with a broken one.
+        img.src = IMGBASE+it.im.f+'.webp?retry=1';
+        return img.decode();
+      }).then(function(){
         if (t !== token) return;                          // a newer step won: never stack two arrivals
+        cap.innerHTML = scCaption(targetIndex);
+        num.textContent = scCount(targetIndex);
+        client.innerHTML = BI(it.p.name.ar, it.p.name.en);
+        frame.setAttribute("data-index", targetIndex); box.setAttribute("data-client", it.p.slug);
         var old = Array.prototype.slice.call(view.children);
         view.appendChild(slide);
         requestAnimationFrame(function(){ requestAnimationFrame(function(){ slide.classList.remove("is-entering"); }); });
         setTimeout(function(){ old.forEach(function(o){ if (o.parentNode === view) view.removeChild(o); }); }, REDUCED ? 0 : 650);
-      });
+      }).catch(function(){ if (t === token) idx = +(frame.getAttribute('data-index') || 0); });
       preload(idx + step);
     }
     /* logical controls: "previous" sits at the reading start (left in English, right in Arabic) */
@@ -393,6 +399,10 @@
     function warm(){ preload(1); preload(-1); }
     frame.addEventListener("pointerenter", warm, { once: true, passive: true });
     frame.addEventListener("focusin", warm, { once: true });
+    var nearby = new IntersectionObserver(function(entries){
+      if (entries.some(function(e){ return e.isIntersecting; })) { warm(); nearby.disconnect(); }
+    }, { rootMargin: '300px' });
+    nearby.observe(box);
   }
 
   var showBox = document.getElementById("showcaseProject");
@@ -435,7 +445,7 @@
       a.className="g-item";
       a.setAttribute("data-ind", p.ind);
       a.innerHTML =
-        '<img loading="lazy" src="'+IMGBASE+img.f+'.jpg"'+(img.w ? ' width="'+img.w+'" height="'+img.h+'"' : "")+' alt="'+p.name.en+' — '+img.t.en+'">'+
+        '<img loading="lazy" decoding="async" src="'+THUMBBASE+img.f+'.webp"'+(img.w ? ' width="'+img.w+'" height="'+img.h+'"' : "")+' alt="'+p.name.en+' — '+img.t.en+'">'+
         '<span class="g-item__zoom">'+zoomSvg+'</span>'+
         '<div class="g-item__ov">'+
           '<span class="g-item__client">'+BI(p.name.ar,p.name.en)+'</span>'+
@@ -467,7 +477,7 @@
       lbCount=document.getElementById("lbCount");
   function renderLB(){
     var p=BYSLUG[LB.slug], img=p.images[LB.i];
-    lbImg.src=IMGBASE+img.f+".jpg";
+    lbImg.src=IMGBASE+img.f+".webp";
     lbClient.innerHTML=BI(p.name.ar,p.name.en);
     lbProject.innerHTML=BI(img.t.ar,img.t.en);
     lbCount.textContent=(LB.i+1)+" / "+p.images.length;
@@ -486,9 +496,9 @@
   function openCase(slug){
     var p=BYSLUG[slug], il=indLabel(p.ind);
     var kp=p.kpis.map(function(k){ return '<div class="cm-kpi"><b>'+k.b+'</b><span>'+BI(k.ar,k.en)+'</span></div>'; }).join("");
-    var gal=p.images.map(function(img,idx){ return '<img loading="lazy" src="'+IMGBASE+img.f+'.jpg" alt="'+img.t.en+'" data-i="'+idx+'">'; }).join("");
+    var gal=p.images.map(function(img,idx){ return '<img loading="lazy" src="'+IMGBASE+img.f+'.webp" alt="'+img.t.en+'" data-i="'+idx+'">'; }).join("");
     cmScroll.innerHTML =
-      '<div class="cm-hero"><img style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.jpg" alt="'+p.name.en+'"><div class="cm-hero__grad"></div>'+
+      '<div class="cm-hero"><img style="object-position:center '+(CASE_FOCUS[p.slug]||"32%")+'" src="'+IMGBASE+p.images[0].f+'.webp" alt="'+p.name.en+'"><div class="cm-hero__grad"></div>'+
         '<div class="cm-hero__body"><span class="cm-hero__ind">'+BI(il.ar,il.en)+'</span>'+
         '<h3 class="cm-hero__name">'+BI(p.name.ar,p.name.en)+'</h3>'+
         '<p class="cm-hero__role">'+BI(p.role.ar,p.role.en)+'</p></div></div>'+

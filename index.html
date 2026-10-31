@@ -6,11 +6,19 @@
 <meta name="description" content="iCreative Agency — نحن لا نصنع محتوى، نحن نبني نموًا. We don't just create content. We build growth." />
 <meta name="theme-color" content="#0E0F12" />
 <title>iCreative Agency — We Build Growth</title>
+<script>
+  // Start each visit at the hero, including refresh and back/forward cache restores.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  function resetVisitPosition() { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+  resetVisitPosition();
+  addEventListener('pageshow', resetVisitPosition);
+</script>
 
 <!-- Fonts: Cairo/Tajawal for Arabic, Poppins/Montserrat for English -->
 <link rel="stylesheet" href="assets/css/fonts.css">
 
-<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/main.css?v=20261031">
 <link rel="stylesheet" href="assets/css/hero3d.css">
 <link rel="stylesheet" href="assets/css/who.css">
 <link rel="stylesheet" href="assets/css/showcase.css">
@@ -180,22 +188,22 @@
 
     <!-- Logo wall — monochrome by default, brand colours on hover. Not clickable. -->
     <div class="logowall" data-reveal data-reveal-delay="1">
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/bite.png" alt="Bite"><img class="lc" src="assets/images/logos/bite-c.jpg" alt="Bite" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/coco.png" alt="Coco Café"><img class="lc" src="assets/images/logos/coco-c.jpg" alt="Coco Café" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/demas.png" alt="Demas"><img class="lc" src="assets/images/logos/demas-c.jpg" alt="Demas" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/burgerx.png" alt="Burger X"><img class="lc" src="assets/images/logos/burgerx-c.jpg" alt="Burger X" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/ladro.png" alt="Ladro Café"><img class="lc" src="assets/images/logos/ladro-c.jpg" alt="Ladro Café" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/khozondar.png" alt="El-Khozondar"><img class="lc" src="assets/images/logos/khozondar-c.jpg" alt="El-Khozondar" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/abwabsham.png" alt="Abwab Al-Sham"><img class="lc" src="assets/images/logos/abwabsham-c.jpg" alt="Abwab Al-Sham" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/georgessara.png" alt="Georges Sara"><img class="lc" src="assets/images/logos/georgessara-c.jpg" alt="Georges Sara" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/elite.png" alt="Elite Development"><img class="lc" src="assets/images/logos/elite-c.jpg" alt="Elite Development" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/sonya.png" alt="Sonya Construction"><img class="lc" src="assets/images/logos/sonya-c.jpg" alt="Sonya Construction" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/autoway.png" alt="Auto Way"><img class="lc" src="assets/images/logos/autoway-c.jpg" alt="Auto Way" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/elevate.png" alt="Elevate Gallery"><img class="lc" src="assets/images/logos/elevate-c.jpg" alt="Elevate Gallery" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/mrwok.png" alt="Mr. Wok"><img class="lc" src="assets/images/logos/mrwok-c.jpg" alt="Mr. Wok" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/simorai.png" alt="SIMORAI"><img class="lc" src="assets/images/logos/simorai-c.jpg" alt="SIMORAI" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/syriantrendhub.png" alt="Syrian Trend Hub"><img class="lc" src="assets/images/logos/syriantrendhub-c.jpg" alt="Syrian Trend Hub" aria-hidden="true"></div>
-      <div class="logo-cell"><img class="lm" src="assets/images/logos/designprint.png" alt="مؤسسة ديزاين للطباعة والاعلان"><img class="lc" src="assets/images/logos/designprint-c.jpg" alt="مؤسسة ديزاين للطباعة والاعلان" aria-hidden="true"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/bite-c.jpg" alt="Bite"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/mrwok-c.jpg" alt="Mr. Wok"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/demas-c.jpg" alt="Demas"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/elevate-c.jpg" alt="Elevate Gallery"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/ladro-c.jpg" alt="Ladro Café"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/khozondar-c.jpg" alt="El-Khozondar"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/abwabsham-c.jpg" alt="Abwab Al-Sham"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/georgessara-c.jpg" alt="Georges Sara"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/elite-c.jpg" alt="Elite Development"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/sonya-c.jpg" alt="Sonya Construction"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/autoway-c.jpg" alt="Auto Way"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/burgerx-c.jpg" alt="Burger X"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/coco-c.jpg" alt="Coco Café"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/simorai-c.jpg" alt="SIMORAI"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/syriantrendhub-c.jpg" alt="Syrian Trend Hub"></div>
+      <div class="logo-cell"><img loading="lazy" decoding="async" class="lc" src="assets/images/logos/designprint-c.jpg" alt="مؤسسة ديزاين للطباعة والاعلان"></div>
     </div>
 
     <p class="clients__note" data-reveal>
@@ -517,7 +525,7 @@
 </footer>
 
 <!-- ============================================================ SCRIPT ============================================================ -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js?v=20261031"></script>
 <script type="module" src="assets/js/hero3d/entry.js"></script>
 </body>
 </html>
